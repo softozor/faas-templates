@@ -2,7 +2,7 @@ using CommonLib.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Admin
+namespace FunctionNamespace
 {
   public class EnvironmentSetup : IEnvironmentSetup
   {
