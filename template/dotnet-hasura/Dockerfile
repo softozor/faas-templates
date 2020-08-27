@@ -7,8 +7,10 @@ ENV FUNCTION_NAME=${FUNCTION_NAME}
 # Supress collection of data.
 ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
 # Optimize for Docker builder caching by adding projects first.
+WORKDIR /src/function
+COPY ./function/$FUNCTION_NAME.csproj  .
 WORKDIR /src
-COPY ./$FUNCTION_NAME.csproj  .
+COPY ./root.csproj  .
 RUN dotnet restore
 COPY .  .
 RUN dotnet publish -c release -o /app
