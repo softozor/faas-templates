@@ -1,6 +1,6 @@
 const { HttpError } = require('http-errors')
 
-exports.handler = fn => {
+module.exports = fn => {
   const handler = async (req, res) => {
     const input = req.body.input
     try {
