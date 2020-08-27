@@ -15,4 +15,4 @@ rm -Rf ./lib/HasuraHandling/bin/Release
 dotnet build -c Release ./lib/HasuraHandling/HasuraHandling.csproj
 
 # publish all libs
-dotnet nuget push ./lib/HasuraHandling/bin/Release/ShopozorHasuraHandling.*.nupkg --api-key $API_KEY --source https://api.nuget.org/v3/index.json
+dotnet nuget push ./lib/HasuraHandling/bin/Release/Shopozor.HasuraHandling.*.nupkg --api-key $API_KEY --source https://api.nuget.org/v3/index.json

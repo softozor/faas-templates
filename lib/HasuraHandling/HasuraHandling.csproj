@@ -9,7 +9,7 @@
     <RepositoryUrl>http://gitlab.hidora.com/softozor/shopozor/services</RepositoryUrl>
     <PackageTags>faas, hasura, graphql</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
-    <PackageId>ShopozorHasuraHandling</PackageId>
+    <PackageId>Shopozor.HasuraHandling</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1.0</FileVersion>
