@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.7" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
-    <PackageReference Include="ShopozorHasuraHandling" Version="1.0.1" />
+    <PackageReference Include="Shopozor.HasuraHandling" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
