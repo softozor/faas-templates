@@ -12,7 +12,7 @@ COPY ./function/$FUNCTION_NAME.csproj  ./Function.csproj
 WORKDIR /src
 COPY ./root.csproj  .
 RUN dotnet restore
-COPY .  .
+COPY . .
 RUN dotnet publish -c release -o /app
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
