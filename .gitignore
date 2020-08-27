@@ -4,6 +4,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+.vscode/
+
 # User-specific files
 *.rsuser
 *.suo
@@ -19,6 +21,7 @@
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
+[Pp]ublished/
 x64/
 x86/
 [Aa][Rr][Mm]/

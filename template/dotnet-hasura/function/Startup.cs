@@ -1,5 +1,6 @@
-using CommonLib.ConfigurationManagement;
-using CommonLib.Interfaces;
+using HasuraFunction.DemoController;
+using HasuraHandling.ConfigurationManagement;
+using HasuraHandling.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace FunctionNamespace
+namespace HasuraFunction
 {
   public class Startup
   {
@@ -31,7 +32,8 @@ namespace FunctionNamespace
           options.AllowSynchronousIO = true;
         })
         .AddSingleton<IEnvironmentSetup, EnvironmentSetup>()
-        .AddConfigurationManagement();
+        .AddConfigurationManagement()
+        .AddDemoHandling();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

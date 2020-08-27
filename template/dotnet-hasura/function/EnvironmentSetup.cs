@@ -1,8 +1,8 @@
-using CommonLib.Interfaces;
+using HasuraHandling.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace FunctionNamespace
+namespace HasuraFunction
 {
   public class EnvironmentSetup : IEnvironmentSetup
   {

@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>softozor</Authors>
+    <Product>shopozor</Product>
+    <Description>Necessary boilerplate code for serverless functions called by hasura actions.</Description>
+    <PackageProjectUrl>http://gitlab.hidora.com/softozor/shopozor</PackageProjectUrl>
+    <RepositoryUrl>http://gitlab.hidora.com/softozor/shopozor/services</RepositoryUrl>
+    <PackageTags>faas, hasura, graphql</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageId>ShopozorHasuraHandling</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GraphQL.Client" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.7" />
+  </ItemGroup>
+
+</Project>
