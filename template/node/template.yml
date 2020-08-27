@@ -1,0 +1,2 @@
+language: node-hasura
+fprocess: node index.js
