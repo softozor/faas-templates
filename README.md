@@ -8,7 +8,7 @@ The templates contained in this repository make wrappers available that make sur
 
 ### NodeJS
 
-Our NodeJS template is very easy to use:
+Our NodeJS template is very easy to use (cf. [our mailhog client functions project](https://gitlab.hidora.com/softozor/shopozor/services/-/tree/master/backend/functions/MailhogClient) for a more elaborate example):
 
 1. In your openfaas stack file, declare your function project like this:
 ```yaml
@@ -46,7 +46,7 @@ In the case of the default handler, the `/` is the route to the handler, therefo
 
 The shopozor needs a lot of functions. Of course, we don't write one .net project for each function, because it would be far too heavy. However, we pack functions that belong together within the same project, so that we comply to the single responsibility principle. To support multiple function projects, we need to diverge a bit from the usual faas template code. That is because otherwise it is not trivial to have a simple `Dockerfile`. To keep things simple, we don't include handler function code and handler function project definition in our template. We therefore have neither `FunctionHandler.cs` nor `FunctionHandler.csproj`. However we have `EnvironmentSetup.cs` and `ServicesConfig.cs` classes in our `function` folder. The former is just there to make some environment data available (like the `IsDevelopment` flag). The latter provides a way to fill the DI container with your function-specific services. It is used in the `Startup` class located at the root of the `dotnet-hasura` template.
 
-Let's see how our template can be used:
+Let's see how our template can be used (cf. [our shopping functions project](https://gitlab.hidora.com/softozor/shopozor/services/-/tree/master/backend/functions/Shopping) for a more elaborate example):
 
 1. In your openfaas stack file, declare your function project like this:
 ```yaml
