@@ -154,6 +154,22 @@ namespace HasuraFunction.DemoController
     }
   }
 }
+
+// ./Admin/ServicesConfig.cs
+using HasuraFunction.DemoController;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace HasuraFunction
+{
+  public static class ServicesConfig
+  {
+    public static void Configure(IServiceCollection services)
+    {
+      services.AddDemoHandling();
+    }
+  }
+}
+
 ```
 
 3. Connect your action handler with a hasura action on the url 
