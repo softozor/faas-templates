@@ -13,6 +13,7 @@ WORKDIR /src
 COPY ./root.csproj  .
 RUN dotnet restore
 COPY . .
+COPY ./function/appsettings.json .
 RUN dotnet publish -c release -o /app
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
