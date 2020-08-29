@@ -1,6 +1,6 @@
 # OpenFaaS Shopozor templates
 
-This repository hosts the openfaas function templates that we use in the shopozor project. All the functions we use are bound to hasura actions / events, therefore they need special boilerplate. We have serverless functions written in nodejs and .net core. Our templates support the shopozor architecture.
+This repository hosts the openfaas function templates that we use in the shopozor project. All the functions we use are bound to hasura actions / events, therefore they need special boilerplate. We have serverless functions written in nodejs and .net core. Our templates support the shopozor architecture. You can find [examples here](https://gitlab.hidora.com/softozor/shopozor/services/-/tree/master/backend/functions).
 
 ## Using the templates
 
