@@ -32,7 +32,7 @@ public class Startup
       .AddSingleton<IEnvironmentSetup, EnvironmentSetup>()
       .AddConfigurationManagement();
 
-    ServicesConfig.Configure(services);
+    ServicesConfig.Configure(Configuration, services);
   }
 
   public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
