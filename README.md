@@ -1,12 +1,163 @@
 # OpenFaaS Shopozor templates
 
-This repository hosts the openfaas function templates that we use in the shopozor project. All the functions we use are bound to hasura actions, therefore they need special boilerplate. We have serverless functions written in nodejs and .net core.
+This repository hosts the openfaas function templates that we use in the shopozor project. All the functions we use are bound to hasura actions, therefore they need special boilerplate. We have serverless functions written in nodejs and .net core. Our templates support the shopozor architecture.
 
 ## Using the templates
 
+The templates contained in this repository make wrappers available that make sure the function responses comply to [the hasura directives](https://hasura.io/docs/1.0/graphql/core/actions/action-handlers.html).
+
 ### NodeJS
 
+Our NodeJS template is very easy to use:
+
+1. In your openfaas stack file, declare your function project like this:
+```yaml
+version: 1.0
+provider:
+  name: openfaas
+  gateway: ${OPENFAAS_GATEWAY_URL:-http://localhost:31112}
+functions:
+  # this example features the shopozor mailhog-client function which we wrote in javascript
+  mailhog-client:
+    namespace: ${OPENFAAS_NAMESPACE:-dev}
+    lang: node-hasura
+    handler: ./MailhogClient
+    image: shopozor/mailhog-client-fn:${IMG_TAG:-latest}
+    environment:
+      MAIL_SERVER_API_PORT: ${MAIL_SERVER_API_PORT:-8025}
+      MAIL_SERVER_HOST: ${MAIL_SERVER_HOST:-mailhog.dev}
+configuration:
+  templates: # this section is critical if you want openfaas to access our templates
+    - name: node-hasura
+      source: https://github.com/shopozor/faas-templates
+```
+
+2. Use the built-in handler function packed in this template's `handler.js` source.
+
+3. Bind your hasura action with the following url (cf. [the default handler](/template/node-hasura/function/handler.js)):
+```
+http://{{OPENFAAS_GATEWAY_URL}}/function/mailhog-client.{{FUNCTION_NAMESPACE}}/
+```
+In the case of the default handler, the `/` is the route to the handler, therefore the action url above features that `/` route. 
+
 ### .Net Core
+
+**CAUTION** This template deploys a docker container with root user. This is something we need to fix some time later (cf. [this issue](https://gitlab.hidora.com/softozor/shopozor/services/-/issues/324)).
+
+The shopozor needs a lot of functions. To support multiple function projects, we need to diverge a bit from the usual faas template code: we don't include handler function code in our template. That is because otherwise it is difficult to have a simple dockerfile. Let's see how our template can be used:
+
+1. In your openfaas stack file, declare your function project like this:
+```yaml
+version: 1.0
+provider:
+  name: openfaas
+  gateway: ${OPENFAAS_GATEWAY_URL:-http://localhost:31112}
+functions:
+  # this example features the shopozor admin function project which we wrote in .Net Core
+  admin:
+    namespace: ${OPENFAAS_NAMESPACE:-dev}
+    lang: dotnet-hasura # this is the template name
+    handler: ./Admin
+    image: shopozor/admin-fn:${IMG_TAG:-latest}
+    build_args:
+      FUNCTION_NAME: Admin # this name is used in the Dockerfile
+configuration:
+  templates: # this section is critical if you want openfaas to access our templates
+    - name: dotnet-hasura
+      source: https://github.com/shopozor/faas-templates
+```
+In the shopozor visual studio solution, there are a few function projects like that one. In order to avoid name conflicts, we need to name them differently. We could have multiple `Function.csproj` in that solution, but they would then all be named the same, which is not very handy. For that reason, we name those function projects differently, which is why we need the above `FUNCTION_NAME` variable passed as docker build argument.
+
+2. Write your handler: in the above example, you could add the following code to the `./Admin` folder:
+```cs
+// ./Admin/Data/DemoInput.cs
+namespace Function.Data
+{
+  public class DemoInput
+  {
+  }
+}
+
+// ./Admin/Data/DemoOutput.cs
+namespace Function.Data
+{
+  public class DemoOutput
+  {
+  }
+}
+
+// ./Admin/DemoController/DemoController.cs
+using Function.Data;
+using HasuraHandling.Controller;
+using HasuraHandling.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+
+namespace HasuraFunction.DemoController
+{
+  [Route("[controller]")]
+  [ApiController]
+  public class DemoController : ActionControllerBase<DemoInput, DemoOutput>
+  {
+    public DemoController(
+      IActionHandler<DemoInput, DemoOutput> handler,
+      ILogger<DemoHandler> logger
+    ) : base(handler, logger)
+    {
+    }
+  }
+}
+
+// ./Admin/DemoController/DemoHandler.cs
+using Function.Data;
+using HasuraHandling.Interfaces;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+
+namespace HasuraFunction.DemoController
+{
+  public class DemoHandler : IActionHandler<DemoInput, DemoOutput>
+  {
+    private readonly ILogger<DemoHandler> _logger;
+
+    public DemoHandler(
+      ILogger<DemoHandler> logger
+    )
+    {
+      _logger = logger;
+    }
+
+    public async Task<DemoOutput> Handle(DemoInput input)
+    {
+      _logger.LogInformation($"Calling demo handler");
+
+      return new DemoOutput();
+    }
+  }
+}
+
+// ./Admin/DemoController/DemoServiceCollectionExtensions.cs
+using Function.Data;
+using HasuraHandling.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace HasuraFunction.DemoController
+{
+  public static class DemoServiceCollectionExtensions
+  {
+    public static IServiceCollection AddDemoHandling(this IServiceCollection services)
+    {
+      return services
+        .AddSingleton<IActionHandler<DemoInput, DemoOutput>, DemoHandler>();
+    }
+  }
+}
+```
+
+3. Connect your action handler with a hasura action on the url 
+```
+http://{{OPENFAAS_GATEWAY_URL}}/function/admin.{{FUNCTION_NAMESPACE}}/demo
+```
 
 ## Updating the templates
 
