@@ -36,6 +36,9 @@ RUN npm i || :
 # COPY function files and folders
 COPY function/ ./
 
+# Run any tests that may be available
+RUN npm test
+
 # Set correct permissions to use non root user
 WORKDIR /home/app/
 
