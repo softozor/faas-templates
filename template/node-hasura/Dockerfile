@@ -1,4 +1,4 @@
-FROM openfaas/of-watchdog:0.8.0 as watchdog
+FROM openfaas/of-watchdog:0.8.1 as watchdog
 
 FROM node:14.8.0-alpine3.11 as ship
 
