@@ -1,7 +1,8 @@
-FROM openfaas/of-watchdog:0.8.1 as watchdog
+FROM openfaas/of-watchdog:0.8.1 AS watchdog
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine-amd64 as builder
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine-amd64 AS builder
 
+ARG DOTNET_OPTIMIZATION_OPTIONS
 ARG FUNCTION_NAME
 ENV FUNCTION_NAME=${FUNCTION_NAME}
 # Supress collection of data.
@@ -14,9 +15,9 @@ COPY ./root.csproj  .
 RUN dotnet restore
 COPY . .
 COPY ./function/appsettings.json .
-RUN dotnet publish -p:PublishSingleFile=true -r linux-musl-x64 --self-contained true -p:PublishTrimmed=True -p:TrimMode=Link -c release -o /app
+RUN dotnet publish ${DOTNET_OPTIMIZATION_OPTIONS} -c release -o /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine-amd64
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine-amd64 
 
 ARG FUNCTION_NAME
 ENV FUNCTION_NAME=${FUNCTION_NAME}
