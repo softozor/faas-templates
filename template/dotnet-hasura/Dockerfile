@@ -1,6 +1,6 @@
 FROM openfaas/of-watchdog:0.8.1 as watchdog
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 as builder
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine-amd64 as builder
 
 ARG FUNCTION_NAME
 ENV FUNCTION_NAME=${FUNCTION_NAME}
@@ -14,9 +14,9 @@ COPY ./root.csproj  .
 RUN dotnet restore
 COPY . .
 COPY ./function/appsettings.json .
-RUN dotnet publish -c release -o /app
+RUN dotnet publish -p:PublishSingleFile=true -r linux-musl-x64 --self-contained true -p:PublishTrimmed=True -p:TrimMode=Link -c release -o /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine-amd64
 
 ARG FUNCTION_NAME
 ENV FUNCTION_NAME=${FUNCTION_NAME}
