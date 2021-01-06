@@ -19,15 +19,12 @@ RUN dotnet publish ${DOTNET_OPTIMIZATION_OPTIONS} -c release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine-amd64 
 
-ARG FUNCTION_NAME
-ENV FUNCTION_NAME=${FUNCTION_NAME}
-
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 
 WORKDIR /app
 COPY --from=builder /app .
 
-ENV fprocess="dotnet ./${FUNCTION_NAME}.dll"
+ENV fprocess="./root"
 ENV cgi_headers="true"
 ENV mode="http"
 ENV upstream_url="http://localhost:80"
