@@ -1,2 +1,2 @@
 language: dotnet-hasura
-fprocess: ./root
+fprocess: dotnet ./root.dll

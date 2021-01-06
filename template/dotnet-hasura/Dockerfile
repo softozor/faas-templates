@@ -2,7 +2,6 @@ FROM openfaas/of-watchdog:0.8.1 AS watchdog
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine-amd64 AS builder
 
-ARG DOTNET_OPTIMIZATION_OPTIONS
 ARG FUNCTION_NAME
 ENV FUNCTION_NAME=${FUNCTION_NAME}
 # Supress collection of data.
@@ -15,16 +14,19 @@ COPY ./root.csproj  .
 RUN dotnet restore
 COPY . .
 COPY ./function/appsettings.json .
-RUN dotnet publish ${DOTNET_OPTIMIZATION_OPTIONS} -c release -o /app
+RUN dotnet publish -c release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine-amd64 
+
+ARG FUNCTION_NAME
+ENV FUNCTION_NAME=${FUNCTION_NAME}
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 
 WORKDIR /app
 COPY --from=builder /app .
 
-ENV fprocess="./root"
+ENV fprocess="dotnet ./${FUNCTION_NAME}.dll"
 ENV cgi_headers="true"
 ENV mode="http"
 ENV upstream_url="http://localhost:80"
