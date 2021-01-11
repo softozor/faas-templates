@@ -1,0 +1,27 @@
+stages:
+- test
+- build
+
+lib-unit-tests:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:5.0
+  script:
+  - dotnet test --logger:"junit;LogFilePath=.\test-reports\test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+  artifacts:
+    reports:
+      junit:
+      - $CI_PROJECT_DIR/lib/*/test-reports/*.xml
+    paths:
+    - $CI_PROJECT_DIR/lib/*/test-reports/*.xml
+  only:
+    changes:
+    - lib/**/*
+
+lib-build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:5.0
+  script:
+  - dotnet build ./lib/HasuraHandling/HasuraHandling.csproj
+  only:
+    changes:
+    - lib/**/*
