@@ -13,10 +13,10 @@ module.exports = fn => {
           code: error.name,
           message: error.message
         })
-        } else {
-          return res.status(400).json({
-            code: error.name,
-            message: error.message
+      } else {
+        return res.status(400).json({
+          code: error.name,
+          message: error.message
         })
       }
     }
