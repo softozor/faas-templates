@@ -2,6 +2,7 @@ const { HttpError } = require('http-errors')
 
 module.exports = fn => {
   const handler = async (req, res) => {
+    console.log('request = ', req)
     const input = req.body.input
     try {
       const result = await fn(input)
