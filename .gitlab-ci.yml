@@ -4,7 +4,7 @@ stages:
 
 lib-unit-tests:
   stage: test
-  image: mcr.microsoft.com/dotnet/sdk:5.0
+  image: mcr.microsoft.com/dotnet/sdk:5.0-alpine-amd64
   script:
   - dotnet test --logger:"junit;LogFilePath=.\test-reports\test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
   artifacts:
@@ -19,7 +19,7 @@ lib-unit-tests:
 
 lib-build:
   stage: build
-  image: mcr.microsoft.com/dotnet/sdk:5.0
+  image: mcr.microsoft.com/dotnet/sdk:5.0-alpine-amd64
   script:
   - dotnet build ./lib/HasuraHandling/HasuraHandling.csproj
   only:
