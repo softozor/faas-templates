@@ -21,8 +21,6 @@ namespace HasuraHandling.Controller
       _handler = handler;
     }
 
-    // here we await because the controller is synchronous
-    // when we know how to do asynchronous hasura actions, then this might change
     [HttpPost]
     [Consumes("application/json")]
     public async Task<IActionResult> Post([FromBody] ActionRequestPayload<InputType> input) => await DoPost(Handle, input.Input);

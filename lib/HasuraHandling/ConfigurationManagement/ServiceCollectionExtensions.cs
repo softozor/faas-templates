@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HasuraHandling.ConfigurationManagement
 {
-  public static class ConfigurationManagementServiceCollectionExtensions
+  public static class ServiceCollectionExtensions
   {
     public static IServiceCollection AddConfigurationManagement(this IServiceCollection services)
     {
