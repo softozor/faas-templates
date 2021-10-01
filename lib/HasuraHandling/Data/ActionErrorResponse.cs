@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace HasuraHandling.Data
+namespace Softozor.HasuraHandling.Data
 {
   public class ActionErrorResponse
   {

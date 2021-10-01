@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace HasuraHandling.Interfaces
+namespace Softozor.HasuraHandling.Interfaces
 {
   public interface IEventHandler<InputType, OutputType>
   {

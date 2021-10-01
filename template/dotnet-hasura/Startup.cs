@@ -1,6 +1,6 @@
-using HasuraFunction;
-using HasuraHandling.ConfigurationManagement;
-using HasuraHandling.Interfaces;
+using Softozor.HasuraFunction;
+using Softozor.HasuraHandling.ConfigurationManagement;
+using Softozor.HasuraHandling.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;

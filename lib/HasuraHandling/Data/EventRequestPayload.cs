@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using System;
 
-namespace HasuraHandling.Data
+namespace Softozor.HasuraHandling.Data
 {
   public class EventRequestPayload<InputType> where InputType : class
   {

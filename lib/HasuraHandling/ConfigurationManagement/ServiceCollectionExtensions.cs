@@ -1,7 +1,7 @@
-using HasuraHandling.Interfaces;
+using Softozor.HasuraHandling.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HasuraHandling.ConfigurationManagement
+namespace Softozor.HasuraHandling.ConfigurationManagement
 {
   public static class ServiceCollectionExtensions
   {

@@ -1,11 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<RootNamespace>FaasTemplates</RootNamespace>
-		<PreserveCompilationReferences>true</PreserveCompilationReferences>
-		<PreserveCompilationContext>true</PreserveCompilationContext>
 		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -15,32 +13,31 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
 		<DebugType>full</DebugType>
-		<CodeAnalysisRuleSet>..\..\code-analysis\stylecop\rules\CodeAnalysisNormalProjectDebug.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRuleSet>..\..\code-analysis\stylecop\rules\CodeAnalysisTestProjectDebug.ruleset</CodeAnalysisRuleSet>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
 		<DebugType>pdbonly</DebugType>
-		<CodeAnalysisRuleSet>..\..\code-analysis\stylecop\rules\CodeAnalysisNormalProject.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRuleSet>..\..\code-analysis\stylecop\rules\CodeAnalysisTestProject.ruleset</CodeAnalysisRuleSet>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="function\**" />
-		<Content Remove="function\**" />
-		<EmbeddedResource Remove="function\**" />
-		<None Remove="function\**" />
+		<PackageReference Include="FluentAssertions" Version="5.10.3" />
+		<PackageReference Include="JunitXml.TestLogger" Version="2.1.81" />
+		<PackageReference Include="Moq" Version="4.16.0" />
+		<PackageReference Include="nunit" Version="3.13.1" />
+		<PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.3" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="function\Function.csproj" />
+		<ProjectReference Include="..\HasuraHandling\Softozor.HasuraHandling.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,9 +1,9 @@
-using HasuraHandling.Interfaces;
+using Softozor.HasuraHandling.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 
-namespace HasuraHandling.ConfigurationManagement
+namespace Softozor.HasuraHandling.ConfigurationManagement
 {
   public class SecretReader : ISecretReader
   {

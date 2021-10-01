@@ -1,10 +1,10 @@
-using HasuraHandling.Controller;
+using Softozor.HasuraHandling.Controller;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace HasuraHandlingTests.Fixtures
+namespace Softozor.HasuraHandlingTests.Fixtures
 {
   public class TestController : HasuraControllerBase
   {

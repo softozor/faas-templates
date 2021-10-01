@@ -1,13 +1,13 @@
 using FluentAssertions;
-using HasuraHandling;
-using HasuraHandlingTests.Fixtures;
+using Softozor.HasuraHandling;
+using Softozor.HasuraHandlingTests.Fixtures;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using System;
 
-namespace CommonLibTests
+namespace Softozor.HasuraHandlingTests
 {
   public class SyncHasuraControllerTests
   {

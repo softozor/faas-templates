@@ -1,18 +1,27 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<RootNamespace>FaasTemplates</RootNamespace>
-		<PreserveCompilationReferences>true</PreserveCompilationReferences>
-		<PreserveCompilationContext>true</PreserveCompilationContext>
+		<Authors>softozor</Authors>
+		<Product>shopozor</Product>
+		<Description>Necessary boilerplate code for serverless functions called by hasura actions.</Description>
+		<PackageProjectUrl>http://gitlab.hidora.com/softozor/</PackageProjectUrl>
+		<RepositoryUrl>http://gitlab.hidora.com/softozor/faas-templates</RepositoryUrl>
+		<PackageTags>faas, hasura, graphql</PackageTags>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageId>Softozor.HasuraHandling</PackageId>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<AssemblyVersion>1.0.4.0</AssemblyVersion>
+		<FileVersion>1.0.4.0</FileVersion>
+		<Version>1.0.4</Version>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
-
+	
 	<PropertyGroup>
 		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 		<GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
 	</PropertyGroup>
-
+	
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
 		<DebugType>full</DebugType>
 		<CodeAnalysisRuleSet>..\..\code-analysis\stylecop\rules\CodeAnalysisNormalProjectDebug.ruleset</CodeAnalysisRuleSet>
@@ -20,6 +29,7 @@
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
 		<DebugType>pdbonly</DebugType>
 		<CodeAnalysisRuleSet>..\..\code-analysis\stylecop\rules\CodeAnalysisNormalProject.ruleset</CodeAnalysisRuleSet>
@@ -29,18 +39,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="function\**" />
-		<Content Remove="function\**" />
-		<EmbeddedResource Remove="function\**" />
-		<None Remove="function\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.3" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="function\Function.csproj" />
+		<PackageReference Include="GraphQL.Client" Version="3.2.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
 	</ItemGroup>
 
 </Project>

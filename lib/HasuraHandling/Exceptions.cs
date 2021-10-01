@@ -1,7 +1,7 @@
 using GraphQL;
 using System;
 
-namespace HasuraHandling
+namespace Softozor.HasuraHandling
 {
   [Serializable]
   public class UnableToHandleException : Exception
