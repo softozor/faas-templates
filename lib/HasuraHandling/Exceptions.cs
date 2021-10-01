@@ -1,8 +1,8 @@
-using GraphQL;
-using System;
-
 namespace Softozor.HasuraHandling
 {
+  using GraphQL;
+  using System;
+  
   [Serializable]
   public class UnableToHandleException : Exception
   {

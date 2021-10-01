@@ -1,10 +1,10 @@
-using Softozor.HasuraHandling.Interfaces;
-using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
-
 namespace Softozor.HasuraHandling.ConfigurationManagement
 {
+  using Softozor.HasuraHandling.Interfaces;
+  using Microsoft.Extensions.Logging;
+  using System;
+  using System.IO;
+  
   public class SecretReader : ISecretReader
   {
     private readonly ILogger<SecretReader> _logger;

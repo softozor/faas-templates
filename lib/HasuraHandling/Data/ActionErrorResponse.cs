@@ -1,7 +1,7 @@
-using Newtonsoft.Json;
-
 namespace Softozor.HasuraHandling.Data
 {
+  using Newtonsoft.Json;
+  
   public class ActionErrorResponse
   {
     [JsonProperty("message")]

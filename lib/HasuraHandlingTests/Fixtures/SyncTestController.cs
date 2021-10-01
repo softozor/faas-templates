@@ -1,10 +1,10 @@
-using Softozor.HasuraHandling.Controller;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-
 namespace Softozor.HasuraHandlingTests.Fixtures
 {
+  using Softozor.HasuraHandling.Controller;
+  using Microsoft.AspNetCore.Mvc;
+  using Microsoft.Extensions.Logging;
+  using System;
+  
   public class SyncTestController : SyncHasuraControllerBase
   {
     public SyncTestController(ILogger logger) : base(logger)

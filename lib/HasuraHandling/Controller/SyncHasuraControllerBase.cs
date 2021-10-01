@@ -1,11 +1,11 @@
-using Softozor.HasuraHandling.Data;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-
 namespace Softozor.HasuraHandling.Controller
 {
+  using Softozor.HasuraHandling.Data;
+  using Microsoft.AspNetCore.Http;
+  using Microsoft.AspNetCore.Mvc;
+  using Microsoft.Extensions.Logging;
+  using System;
+  
   public abstract class SyncHasuraControllerBase : ControllerBase
   {
     protected readonly ILogger _logger;

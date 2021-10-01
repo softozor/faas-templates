@@ -1,12 +1,12 @@
-using Softozor.HasuraHandling.Data;
-using Softozor.HasuraHandling.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
-
 namespace Softozor.HasuraHandling.Controller
 {
+  using Softozor.HasuraHandling.Data;
+  using Softozor.HasuraHandling.Interfaces;
+  using Microsoft.AspNetCore.Mvc;
+  using Microsoft.Extensions.Logging;
+  using System;
+  using System.Threading.Tasks;
+  
   public abstract class EventControllerBase<InputType, OutputType> : HasuraControllerBase
     where InputType : class
     where OutputType : class

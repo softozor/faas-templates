@@ -1,8 +1,8 @@
-using Newtonsoft.Json;
-using System;
-
 namespace Softozor.HasuraHandling.Data
 {
+  using Newtonsoft.Json;
+  using System;
+  
   public class HasuraClaims
   {
     [JsonProperty("x-hasura-allowed-roles")]

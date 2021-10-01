@@ -1,11 +1,11 @@
-using Softozor.HasuraHandling.Data;
-using Softozor.HasuraHandling.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-
 namespace Softozor.HasuraHandling.Controller
 {
+  using Softozor.HasuraHandling.Data;
+  using Softozor.HasuraHandling.Interfaces;
+  using Microsoft.AspNetCore.Mvc;
+  using Microsoft.Extensions.Logging;
+  using System;
+  
   public abstract class SyncActionControllerBase<InputType, OutputType> : SyncHasuraControllerBase
     where InputType : class
     where OutputType : class
