@@ -1,9 +1,8 @@
-namespace Softozor.HasuraHandling.Interfaces
+namespace Softozor.HasuraHandling.Interfaces;
+
+using System.Threading.Tasks;
+
+public interface IActionHandler<TInputType, TOutputType>
 {
-  using System.Threading.Tasks;
-  
-  public interface IActionHandler<InputType, OutputType>
-  {
-    Task<OutputType> Handle(InputType input);
-  }
+    Task<TOutputType> Handle(TInputType input);
 }

@@ -1,66 +1,70 @@
-namespace Softozor.HasuraHandling.Controller
-{
-  using Softozor.HasuraHandling.Data;
-  using Microsoft.AspNetCore.Http;
-  using Microsoft.AspNetCore.Mvc;
-  using Microsoft.Extensions.Logging;
-  using System;
-  
-  public abstract class SyncHasuraControllerBase : ControllerBase
-  {
-    protected readonly ILogger _logger;
+namespace Softozor.HasuraHandling.Controller;
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Softozor.HasuraHandling.Data;
+
+public abstract class SyncHasuraControllerBase : ControllerBase
+{
     protected SyncHasuraControllerBase(ILogger logger)
     {
-      _logger = logger;
+        this.Logger = logger;
     }
 
+    protected ILogger Logger { get; }
+
+    [SuppressMessage(
+        "Design",
+        "CA1031:Do not catch general exception types",
+        Justification =
+            "This is the last point before we reach out to the user, therefore we need to capture all possible exceptions")]
     protected IActionResult TryToHandle(Func<IActionResult> callback)
     {
-      try
-      {
-        return callback();
-      }
-      catch (UnableToHandleException ex)
-      {
-        _logger.LogWarning($"Caught UnableToLoginException: {ex}");
-
-        return Unauthorized(new ActionErrorResponse
+        try
         {
-          Code = StatusCodes.Status401Unauthorized.ToString(),
-          Message = "Unauthorized access"
-        });
-      }
-      catch (GraphqlException ex)
-      {
-        _logger.LogWarning($"Caught GraphqlException: {ex}");
-
-        return StatusCode(StatusCodes.Status500InternalServerError, new ActionErrorResponse
+            return callback();
+        }
+        catch (UnableToHandleException ex)
         {
-          Code = StatusCodes.Status500InternalServerError.ToString(),
-          Message = ex.Message
-        });
-      }
-      catch (FormatException ex)
-      {
-        _logger.LogWarning($"Caught FormatException: {ex}");
+            this.Logger.LogWarning($"Caught UnableToLoginException: {ex}");
 
-        return BadRequest(new ActionErrorResponse
+            return this.Unauthorized(
+                new ActionErrorResponse(
+                    "Unauthorized access",
+                    StatusCodes.Status401Unauthorized.ToString(CultureInfo.InvariantCulture)));
+        }
+        catch (GraphqlException ex)
         {
-          Code = StatusCodes.Status400BadRequest.ToString(),
-          Message = "Unauthorized access"
-        });
-      }
-      catch (Exception ex)
-      {
-        _logger.LogError($"Caught generic Exception: {ex}");
+            this.Logger.LogWarning($"Caught GraphqlException: {ex}");
 
-        return StatusCode(StatusCodes.Status500InternalServerError, new ActionErrorResponse
+            return this.StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new ActionErrorResponse(
+                    ex.Message,
+                    StatusCodes.Status500InternalServerError.ToString(CultureInfo.InvariantCulture)));
+        }
+        catch (FormatException ex)
         {
-          Code = StatusCodes.Status500InternalServerError.ToString(),
-          Message = ex.Message
-        });
-      }
+            this.Logger.LogWarning($"Caught FormatException: {ex}");
+
+            return this.BadRequest(
+                new ActionErrorResponse(
+                    "Unauthorized access",
+                    StatusCodes.Status400BadRequest.ToString(CultureInfo.InvariantCulture)));
+        }
+        catch (Exception ex)
+        {
+            this.Logger.LogError($"Caught generic Exception: {ex}");
+
+            return this.StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new ActionErrorResponse(
+                    ex.Message,
+                    StatusCodes.Status500InternalServerError.ToString(CultureInfo.InvariantCulture)));
+        }
     }
-  }
 }

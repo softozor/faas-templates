@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{EFA831B0-797
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Softozor.HasuraHandling", "lib\HasuraHandling\Softozor.HasuraHandling.csproj", "{3B453DE1-EC1A-4F00-A3AC-427F14DAD103}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{254D3439-CEA7-4DE6-A922-5385CC53D228}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Softozor.HasuraHandlingTests", "lib\HasuraHandlingTests\Softozor.HasuraHandlingTests.csproj", "{0C311187-B26F-4740-8313-7902BD8D67FA}"
 EndProject
 Global
@@ -37,7 +35,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3B453DE1-EC1A-4F00-A3AC-427F14DAD103} = {EFA831B0-7970-4A9D-BA65-EDF82551A331}
-		{0C311187-B26F-4740-8313-7902BD8D67FA} = {254D3439-CEA7-4DE6-A922-5385CC53D228}
+		{0C311187-B26F-4740-8313-7902BD8D67FA} = {EFA831B0-7970-4A9D-BA65-EDF82551A331}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {21C46EBB-DDEA-40D1-B52A-C22D51FAB303}

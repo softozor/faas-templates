@@ -1,24 +1,24 @@
-namespace Softozor.HasuraHandlingTests
+namespace Softozor.HasuraHandlingTests;
+
+using System;
+using System.Threading.Tasks;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using NUnit.Framework;
+using Softozor.HasuraHandling;
+using Softozor.HasuraHandlingTests.Fixtures;
+
+public class HasuraControllerTests
 {
-  using FluentAssertions;
-  using Softozor.HasuraHandling;
-  using Softozor.HasuraHandlingTests.Fixtures;
-  using Microsoft.AspNetCore.Mvc;
-  using Microsoft.Extensions.Logging;
-  using Moq;
-  using NUnit.Framework;
-  using System;
-  using System.Threading.Tasks;
-  
-  public class HasuraControllerTests
-  {
-    TestController _sut;
+    private TestController? sut;
 
     [SetUp]
     public void Setup()
     {
-      var logger = Mock.Of<ILogger>();
-      _sut = new TestController(logger);
+        var logger = Mock.Of<ILogger>();
+        this.sut = new TestController(logger);
     }
 
     [TestCase(typeof(UnableToHandleException), typeof(UnauthorizedObjectResult), 401)]
@@ -26,18 +26,21 @@ namespace Softozor.HasuraHandlingTests
     [TestCase(typeof(FormatException), typeof(BadRequestObjectResult), 400)]
     [TestCase(typeof(Exception), typeof(ObjectResult), 500)]
     public async Task ShouldReturnResponseCorrespondingToException(
-      Type handlerExceptionType, Type expectedResponseType, int expectedStatusCode)
+        Type handlerExceptionType,
+        Type expectedResponseType,
+        int expectedStatusCode)
     {
-      // Given the callback throws some exception
-      Func<Task<IActionResult>> callback = () => throw (Exception)Activator.CreateInstance(handlerExceptionType);
+        // Given the callback throws some exception
+        var exception = Activator.CreateInstance(handlerExceptionType) as Exception;
+        Assume.That(exception, Is.Not.Null);
+        Func<Task<IActionResult>> callback = () => throw exception!;
 
-      // When the controller handles this callback
-      var response = await _sut.TestPost(callback);
+        // When the controller handles this callback
+        var response = await this.sut!.TestPost(callback);
 
-      // Then we get the corresponding response
-      response.Should().BeOfType(expectedResponseType);
-      var actualStatusCode = expectedResponseType.GetProperty(nameof(ObjectResult.StatusCode)).GetValue(response);
-      actualStatusCode.Should().Be(expectedStatusCode);
+        // Then we get the corresponding response
+        response.Should().BeOfType(expectedResponseType);
+        var actualStatusCode = expectedResponseType.GetProperty(nameof(ObjectResult.StatusCode))?.GetValue(response);
+        actualStatusCode.Should().Be(expectedStatusCode);
     }
-  }
 }

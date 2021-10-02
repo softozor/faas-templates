@@ -1,39 +1,43 @@
-namespace Softozor.HasuraHandling.Controller
-{
-  using Softozor.HasuraHandling.Data;
-  using Softozor.HasuraHandling.Interfaces;
-  using Microsoft.AspNetCore.Mvc;
-  using Microsoft.Extensions.Logging;
-  using System;
-  using System.Threading.Tasks;
-  
-  public abstract class ActionControllerBase<InputType, OutputType> : HasuraControllerBase
-    where InputType : class
-    where OutputType : class
-  {
-    protected readonly IActionHandler<InputType, OutputType> _handler;
+namespace Softozor.HasuraHandling.Controller;
 
-    protected ActionControllerBase(
-      IActionHandler<InputType, OutputType> handler,
-      ILogger logger
-    ) : base(logger)
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Softozor.HasuraHandling.Data;
+using Softozor.HasuraHandling.Interfaces;
+
+public abstract class ActionControllerBase<TInputType, TOutputType> : HasuraControllerBase
+    where TInputType : class
+    where TOutputType : class
+{
+    protected IActionHandler<TInputType, TOutputType> Handler { get; }
+
+    protected ActionControllerBase(IActionHandler<TInputType, TOutputType> handler, ILogger logger)
+        : base(logger)
     {
-      _handler = handler;
+        this.Handler = handler;
     }
 
     [HttpPost]
     [Consumes("application/json")]
-    public async Task<IActionResult> Post([FromBody] ActionRequestPayload<InputType> input) => await DoPost(Handle, input.Input);
-
-    protected async Task<IActionResult> DoPost(Func<InputType, Task<OutputType>> handlerCallback, InputType input)
+    public async Task<IActionResult> Post([FromBody] ActionRequestPayload<TInputType> input)
     {
-      return await TryToHandle(async () =>
-      {
-        var result = await handlerCallback(input);
-        return Ok(result);
-      });
+        return await this.DoPost(this.Handle, input.Input);
     }
 
-    protected Task<OutputType> Handle(InputType input) => _handler.Handle(input);
-  }
+    protected async Task<IActionResult> DoPost(Func<TInputType, Task<TOutputType>> handlerCallback, TInputType input)
+    {
+        return await this.TryToHandle(
+            async () =>
+            {
+                var result = await handlerCallback(input);
+                return this.Ok(result);
+            });
+    }
+
+    protected Task<TOutputType> Handle(TInputType input)
+    {
+        return this.Handler.Handle(input);
+    }
 }

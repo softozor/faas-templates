@@ -1,7 +1,6 @@
-namespace Softozor.HasuraHandling.Interfaces
+namespace Softozor.HasuraHandling.Interfaces;
+
+public interface ISecretReader
 {
-  public interface ISecretReader
-  {
     string GetSecret(string secretName);
-  }
 }

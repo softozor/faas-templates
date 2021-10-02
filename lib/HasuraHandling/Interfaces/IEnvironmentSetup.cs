@@ -1,7 +1,6 @@
-namespace Softozor.HasuraHandling.Interfaces
+namespace Softozor.HasuraHandling.Interfaces;
+
+public interface IEnvironmentSetup
 {
-  public interface IEnvironmentSetup
-  {
     bool IsDevelopment();
-  }
 }

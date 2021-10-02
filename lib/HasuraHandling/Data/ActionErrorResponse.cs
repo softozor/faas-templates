@@ -1,13 +1,19 @@
-namespace Softozor.HasuraHandling.Data
+namespace Softozor.HasuraHandling.Data;
+
+using Newtonsoft.Json;
+
+public class ActionErrorResponse
 {
-  using Newtonsoft.Json;
-  
-  public class ActionErrorResponse
-  {
+    [JsonConstructor]
+    public ActionErrorResponse(string message, string code)
+    {
+        this.Message = message;
+        this.Code = code;
+    }
+
     [JsonProperty("message")]
-    public string Message { get; set; }
+    public string Message { get; }
 
     [JsonProperty("code")]
-    public string Code { get; set; }
-  }
+    public string Code { get; }
 }

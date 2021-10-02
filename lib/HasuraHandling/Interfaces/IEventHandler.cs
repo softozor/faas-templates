@@ -1,9 +1,13 @@
-namespace Softozor.HasuraHandling.Interfaces
+namespace Softozor.HasuraHandling.Interfaces;
+
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
+
+[SuppressMessage(
+    "Naming",
+    "CA1711:Identifiers should not have incorrect suffix",
+    Justification = "This is the domain name")]
+public interface IEventHandler<TInputType, TOutputType>
 {
-  using System.Threading.Tasks;
-  
-  public interface IEventHandler<InputType, OutputType>
-  {
-    Task<OutputType> Handle(InputType oldRow, InputType newRow);
-  }
+    Task<TOutputType> Handle(TInputType oldRow, TInputType newRow);
 }
