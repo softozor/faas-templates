@@ -1,12 +1,44 @@
 stages:
-- test
 - build
+- test
+- publish
 
-lib-unit-tests:
-  stage: test
-  image: mcr.microsoft.com/dotnet/sdk:5.0-alpine-amd64
+variables:
+  CONFIGURATION: Release
+  DOTNET_VERSION: 6.0
+  GIT_SUBMODULE_STRATEGY: recursive
+  NUGET_PACKAGES_DIRECTORY: .nuget
+  SOURCE_NAME: gitlab-hasura-serverless
+
+# we could cache the .nuget folder, but for some reason caching doesn't work on gitlab.hidora
+
+.publish-nuget: &publish-nuget
+- dotnet nuget add source "${CI_API_V4_URL}/projects/$CI_PROJECT_ID/packages/nuget/index.json" --name ${SOURCE_NAME} --username $GITLAB_USER_LOGIN --password $PRIVATE_ACCESS_TOKEN --store-password-in-clear-text
+- new_version=$(python3 /usr/local/bin/get_latest_package_version.py --package-name ${PACKAGE_NAME} --package-type nuget)
+- python3 /usr/local/bin/set_assembly_version.py -f ${BASE_DIR}/${PACKAGE_NAME}/${PACKAGE_NAME}.csproj -v $new_version
+- dotnet pack --no-build -c ${CONFIGURATION} ${BASE_DIR}/${PACKAGE_NAME}/${PACKAGE_NAME}.csproj
+- dotnet nuget push ${BASE_DIR}/${PACKAGE_NAME}/bin/${CONFIGURATION}/*.nupkg --source ${SOURCE_NAME}
+
+before_script:
+# if caching was working, this command would only run once
+- dotnet restore --packages $NUGET_PACKAGES_DIRECTORY
+
+build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-alpine-amd64
   script:
-  - dotnet test --logger:"junit;LogFilePath=.\test-reports\test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+  - dotnet publish -c ${CONFIGURATION} ./lib/HasuraHandling/HasuraHandling.csproj
+  artifacts:
+  - $CI_PROJECT_DIR/lib/*/bin/${CONFIGURATION}/net${DOTNET_VERSION}
+  only:
+    changes:
+    - lib/**/*
+
+hasura-handling-tests:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-alpine-amd64
+  script:
+  - dotnet test --no-build -c ${CONFIGURATION} --logger:"junit;LogFilePath=.\test-reports\test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
   artifacts:
     reports:
       junit:
@@ -17,11 +49,16 @@ lib-unit-tests:
     changes:
     - lib/**/*
 
-lib-build:
-  stage: build
-  image: mcr.microsoft.com/dotnet/sdk:5.0-alpine-amd64
+publish-hasura-handling:
+  image: shopozor/dotnet-publish:$TOOLS_SHA
+  stage: publish
+  variables:
+    BASE_DIR: ./lib
+    PACKAGE_NAME: Softozor.HasuraHandling
   script:
-  - dotnet build ./lib/HasuraHandling/HasuraHandling.csproj
+  - *publish-nuget
   only:
+    refs:
+    - master
     changes:
-    - lib/**/*
+    - ./lib/HasuraHandling/**/*
