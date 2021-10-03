@@ -3,17 +3,15 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<Authors>softozor</Authors>
-		<Product>shopozor</Product>
-		<Description>Necessary boilerplate code for serverless functions called by hasura actions.</Description>
-		<PackageProjectUrl>http://gitlab.hidora.com/softozor/</PackageProjectUrl>
+		<Product>Hasura serverless handling</Product>
+        <PackageDescription>Necessary boilerplate code for serverless functions called by hasura actions.</PackageDescription>
+		<PackageProjectUrl>http://gitlab.hidora.com/softozor/faas-templates</PackageProjectUrl>
 		<RepositoryUrl>http://gitlab.hidora.com/softozor/faas-templates</RepositoryUrl>
 		<PackageTags>faas, hasura, graphql</PackageTags>
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageId>Softozor.HasuraHandling</PackageId>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<AssemblyVersion>1.0.4.0</AssemblyVersion>
-		<FileVersion>1.0.4.0</FileVersion>
-		<Version>1.0.4</Version>
+		<Version>1.0.0</Version>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	

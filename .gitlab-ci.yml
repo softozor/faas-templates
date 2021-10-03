@@ -39,13 +39,13 @@ hasura-handling-tests:
   stage: test
   image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-alpine-amd64
   script:
-  - dotnet test --no-build -c ${CONFIGURATION} --logger:"junit;LogFilePath=.\test-reports\test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+  - dotnet test -c ${CONFIGURATION} --logger:"junit;LogFilePath=.\test-reports\test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
   artifacts:
     reports:
       junit:
-      - $CI_PROJECT_DIR/lib/*/test-reports/*.xml
+      - $CI_PROJECT_DIR/lib/*.Tests/test-reports/*.xml
     paths:
-    - $CI_PROJECT_DIR/lib/*/test-reports/*.xml
+    - $CI_PROJECT_DIR/lib/*.Tests/test-reports/*.xml
   only:
     changes:
     - lib/**/*
