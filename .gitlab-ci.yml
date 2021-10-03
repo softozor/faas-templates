@@ -27,7 +27,7 @@ build:
   stage: build
   image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-alpine-amd64
   script:
-  - dotnet publish -c ${CONFIGURATION} ./lib/HasuraHandling/HasuraHandling.csproj
+  - dotnet publish -c ${CONFIGURATION} ./lib/Softozor.HasuraHandling/Softozor.HasuraHandling.csproj
   artifacts:
     paths:
     - $CI_PROJECT_DIR/lib/*/bin/${CONFIGURATION}/net${DOTNET_VERSION}
@@ -62,4 +62,4 @@ publish-hasura-handling:
     refs:
     - master
     changes:
-    - ./lib/HasuraHandling/**/*
+    - ./lib/Softozor.HasuraHandling/**/*
