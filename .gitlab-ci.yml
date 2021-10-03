@@ -52,7 +52,7 @@ hasura-handling-tests:
     - lib/**/*
 
 publish-hasura-handling:
-  image: shopozor/dotnet-publish:$TOOLS_SHA
+  image: softozor/dotnet-publish:$TOOLS_SHA
   stage: publish
   variables:
     BASE_DIR: ./lib
