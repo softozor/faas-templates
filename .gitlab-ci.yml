@@ -28,6 +28,7 @@ build:
   image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-alpine-amd64
   script:
   - dotnet publish -c ${CONFIGURATION} ./lib/Softozor.HasuraHandling/Softozor.HasuraHandling.csproj
+  - dotnet publish -c ${CONFIGURATION} ./lib/Softozor.HasuraHandling.Tests/Softozor.HasuraHandling.Tests.csproj
   artifacts:
     paths:
     - $CI_PROJECT_DIR/lib/*/bin/${CONFIGURATION}/net${DOTNET_VERSION}
@@ -39,7 +40,7 @@ hasura-handling-tests:
   stage: test
   image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-alpine-amd64
   script:
-  - dotnet test -c ${CONFIGURATION} --logger:"junit;LogFilePath=.\test-reports\test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+  - dotnet test --no-build -c ${CONFIGURATION} --logger:"junit;LogFilePath=.\test-reports\test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
   artifacts:
     reports:
       junit:
