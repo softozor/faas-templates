@@ -5,7 +5,7 @@ stages:
 
 variables:
   CONFIGURATION: Release
-  DOTNET_VERSION: 6.0
+  DOTNET_VERSION: "6.0"
   GIT_SUBMODULE_STRATEGY: recursive
   NUGET_PACKAGES_DIRECTORY: .nuget
   SOURCE_NAME: gitlab-hasura-serverless
