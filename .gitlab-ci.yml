@@ -29,7 +29,8 @@ build:
   script:
   - dotnet publish -c ${CONFIGURATION} ./lib/HasuraHandling/HasuraHandling.csproj
   artifacts:
-  - $CI_PROJECT_DIR/lib/*/bin/${CONFIGURATION}/net${DOTNET_VERSION}
+    paths:
+    - $CI_PROJECT_DIR/lib/*/bin/${CONFIGURATION}/net${DOTNET_VERSION}
   only:
     changes:
     - lib/**/*
