@@ -1,6 +1,6 @@
 namespace HasuraFunction;
 
-using HasuraHandling.Interfaces;
+using Softozor.HasuraHandling.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 

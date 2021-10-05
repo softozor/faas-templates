@@ -1,4 +1,4 @@
-namespace Function;
+namespace HasuraFunction;
 
 public class Output
 {

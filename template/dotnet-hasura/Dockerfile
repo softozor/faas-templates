@@ -14,7 +14,6 @@ COPY ./root.csproj  .
 RUN dotnet nuget add source http://gitlab.hidora.com/api/v4/projects/142/packages/nuget/index.json --name "gitlab-hasura-serverless" \
     && dotnet restore
 COPY . .
-COPY ./function/appsettings.json .
 RUN dotnet publish -c release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine-amd64 

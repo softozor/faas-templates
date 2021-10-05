@@ -2,6 +2,7 @@ namespace HasuraFunction;
 
 using HasuraHandling.Interfaces;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 public class HasuraHandler : IActionHandler<Input, Output>
 {
@@ -14,10 +15,10 @@ public class HasuraHandler : IActionHandler<Input, Output>
       _logger = logger;
     }
     
-    public async Task<DemoOutput> Handle(Input input)
+    public Task<Output> Handle(Input input)
     {
       _logger.LogInformation($"Calling hasura handler");
     
-      return new Output();
+      return Task.FromResult<Output>(new Output());
     }
 }

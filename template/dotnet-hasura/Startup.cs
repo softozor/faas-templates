@@ -1,6 +1,6 @@
 namespace FaasTemplates;
 
-using Softozor.HasuraFunction;
+using HasuraFunction;
 using Softozor.HasuraHandling.ConfigurationManagement;
 using Softozor.HasuraHandling.Interfaces;
 using Microsoft.AspNetCore.Builder;
