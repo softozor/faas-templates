@@ -1,6 +1,6 @@
-FROM openfaas/of-watchdog:0.8.1 AS watchdog
+FROM openfaas/of-watchdog:0.8.2 AS watchdog
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine-amd64 AS builder
 
 ARG FUNCTION_NAME
 ENV FUNCTION_NAME=${FUNCTION_NAME}
@@ -16,7 +16,7 @@ COPY . .
 COPY ./function/appsettings.json .
 RUN dotnet publish -c release -o /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine-amd64 
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine-amd64 
 
 ARG FUNCTION_NAME
 ENV FUNCTION_NAME=${FUNCTION_NAME}
