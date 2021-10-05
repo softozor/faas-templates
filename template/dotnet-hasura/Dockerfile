@@ -11,7 +11,8 @@ WORKDIR /src/function
 COPY ./function/$FUNCTION_NAME.csproj  ./Function.csproj
 WORKDIR /src
 COPY ./root.csproj  .
-RUN dotnet restore
+RUN nuget source Add -Name "gitlab-hasura-serverless" -Source "http://gitlab.hidora.com/api/v4/projects/142/packages/nuget/index.json" \
+    && dotnet restore
 COPY . .
 COPY ./function/appsettings.json .
 RUN dotnet publish -c release -o /app
