@@ -93,8 +93,9 @@ publish-hasura-handling-patch:
   only:
     refs:
     - master
-    changes:
-    - ./lib/Softozor.HasuraHandling/**/*
+# TODO: reactivate!
+#    changes:
+#    - ./lib/Softozor.HasuraHandling/**/*
 
 publish-hasura-handling-minor:
   image: softozor/dotnet-publish:$TOOLS_SHA
