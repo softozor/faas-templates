@@ -1,0 +1,12 @@
+version: 1.0
+provider:
+  name: openfaas
+functions:
+  nodejs-fnc:
+    lang: node-hasura
+    handler: ./nodejs-hasura
+    image: softozor/nodejs-hasura-example-fnc:latest
+configuration:
+  templates:
+    - name: node-hasura
+      source: http://gitlab.hidora.com/softozor/faas-templates.git

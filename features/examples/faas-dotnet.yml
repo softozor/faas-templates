@@ -5,7 +5,7 @@ functions:
   dotnet-fnc:
     lang: dotnet-hasura
     handler: ./dotnet-hasura
-    image: softozor/dotnet-hasura:latest
+    image: softozor/dotnet-hasura-example-fnc:latest
     build_args:
       FUNCTION_NAME: DotNetHasura
 configuration:
