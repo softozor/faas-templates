@@ -58,10 +58,9 @@ build:
   artifacts:
     paths:
     - $CI_PROJECT_DIR/lib/*/bin/${CONFIGURATION}/net${DOTNET_VERSION}
-# TODO: reactivate
-#  only:
-#    changes:
-#    - lib/**/*
+  only:
+    changes:
+    - lib/**/*
 
 hasura-handling-tests:
   stage: lib-test
@@ -76,10 +75,9 @@ hasura-handling-tests:
       - $CI_PROJECT_DIR/lib/*.Tests/test-reports/*.xml
     paths:
     - $CI_PROJECT_DIR/lib/*.Tests/test-reports/*.xml
-# TODO: reactivate
-#  only:
-#    changes:
-#    - lib/**/*
+  only:
+    changes:
+    - lib/**/*
 
 publish-hasura-handling-patch:
   image: softozor/dotnet-publish:$TOOLS_SHA
@@ -95,9 +93,8 @@ publish-hasura-handling-patch:
   only:
     refs:
     - master
-# TODO: reactivate!
-#    changes:
-#    - ./lib/Softozor.HasuraHandling/**/*
+    changes:
+    - ./lib/Softozor.HasuraHandling/**/*
 
 publish-hasura-handling-minor:
   image: softozor/dotnet-publish:$TOOLS_SHA
