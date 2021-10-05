@@ -1,0 +1,14 @@
+version: 1.0
+provider:
+  name: openfaas
+functions:
+  dotnet-fnc:
+    lang: dotnet-hasura
+    handler: ./dotnet-hasura
+    image: softozor/dotnet-hasura:latest
+    build_args:
+      FUNCTION_NAME: DotNetHasura
+configuration:
+  templates: 
+    - name: dotnet-hasura
+      source: http://gitlab.hidora.com/softozor/faas-templates.git

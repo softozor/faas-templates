@@ -1,0 +1,23 @@
+type: install
+name: Hasura serverless test infrastructure
+baseUrl: http://gitlab.hidora.com/softozor/hasura-jps/-/raw/master
+
+nodes:
+  - displayName: faasd
+    count: 1
+    cloudlets: 16
+    nodeGroup: faas
+    nodeType: docker
+    image: softozor/ubuntu-git:latest
+skipNodeEmails: true
+
+onInstall:
+  - installFaas
+
+actions:
+  installFaas:
+    - cmd[faas]:
+        - git clone https://github.com/openfaas/faasd
+        - cd faasd
+        - ./hack/install.sh
+      

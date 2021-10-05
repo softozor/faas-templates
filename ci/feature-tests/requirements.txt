@@ -1,0 +1,2 @@
+-e git+https://github.com/behave/behave@bfda54448906d919ffd3fa4424b6d3c155a5388b#egg=behave
+jelastic-client==1.1.30

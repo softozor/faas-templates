@@ -1,7 +1,10 @@
 stages:
+- publish-docker
 - build
-- test
-- publish
+- lib-test
+- publish-nuget
+- acceptance-test
+- report
 
 variables:
   CONFIGURATION: Release
@@ -9,19 +12,46 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   NUGET_PACKAGES_DIRECTORY: .nuget
   SOURCE_NAME: gitlab-hasura-serverless
+  TEST_IMAGE_NAME: softozor/hasura-serverless-test
+
+.docker-login: &docker-login
+- docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+.docker-push: &docker-push
+- docker push $DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
+- docker push $DOCKER_IMAGE:latest
 
 # we could cache the .nuget folder, but for some reason caching doesn't work on gitlab.hidora
 
 .publish-nuget: &publish-nuget
 - dotnet nuget add source "${CI_API_V4_URL}/projects/$CI_PROJECT_ID/packages/nuget/index.json" --name ${SOURCE_NAME} --username $GITLAB_USER_LOGIN --password $PRIVATE_ACCESS_TOKEN --store-password-in-clear-text
-- new_version=$(python3 /usr/local/bin/get_latest_package_version.py --package-name ${PACKAGE_NAME} --package-type nuget)
-- python3 /usr/local/bin/set_assembly_version.py -f ${BASE_DIR}/${PACKAGE_NAME}/${PACKAGE_NAME}.csproj -v $new_version
+- python3 /usr/local/bin/set_assembly_version.py -f ${BASE_DIR}/${PACKAGE_NAME}/${PACKAGE_NAME}.csproj -v $NEW_VERSION
 - dotnet pack --no-build -c ${CONFIGURATION} ${BASE_DIR}/${PACKAGE_NAME}/${PACKAGE_NAME}.csproj
 - dotnet nuget push ${BASE_DIR}/${PACKAGE_NAME}/bin/${CONFIGURATION}/*.nupkg --source ${SOURCE_NAME}
 
 before_script:
 # if caching was working, this command would only run once
 - dotnet restore --packages $NUGET_PACKAGES_DIRECTORY
+
+publish-feature-test-image:
+  stage: publish-docker
+  image: docker:latest
+  variables:
+    DOCKER_IMAGE: ${TEST_IMAGE_NAME}
+    DOCKERFILE_FOLDER: ./ci/feature-tests
+  before_script:
+  - *docker-login
+  script:
+  - |
+    docker build $DOCKERFILE_FOLDER -t $DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA -t $DOCKER_IMAGE:latest \
+      --build-arg FAAS_CLI_VERSION=${FAAS_CLI_VERSION} \
+      --build-arg PERSONAL_ACCESS_TOKEN=${PRIVATE_ACCESS_TOKEN} \
+      --build-arg CI_API_V4_URL=${CI_API_V4_URL} \
+      --build-arg FAAS_CLIENT_PYPI_PROJECT_ID=${FAAS_CLIENT_PYPI_PROJECT_ID}
+  - *docker-push
+  only:
+    changes:
+      - ci/feature-tests/*
 
 build:
   stage: build
@@ -37,7 +67,7 @@ build:
     - lib/**/*
 
 hasura-handling-tests:
-  stage: test
+  stage: lib-test
   image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-alpine-amd64
   script:
   - dotnet test --no-build -c ${CONFIGURATION} --logger:"junit;LogFilePath=.\test-reports\test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
@@ -51,12 +81,14 @@ hasura-handling-tests:
     changes:
     - lib/**/*
 
-publish-hasura-handling:
+publish-hasura-handling-patch:
   image: softozor/dotnet-publish:$TOOLS_SHA
-  stage: publish
+  stage: publish-nuget
   variables:
     BASE_DIR: ./lib
     PACKAGE_NAME: Softozor.HasuraHandling
+  before_script:
+  - export NEW_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type nuget --min-version $MIN_PACKAGE_VERSION)
   script:
   - *publish-nuget
   only:
@@ -64,3 +96,73 @@ publish-hasura-handling:
     - master
     changes:
     - ./lib/Softozor.HasuraHandling/**/*
+
+publish-hasura-handling-minor:
+  image: softozor/dotnet-publish:$TOOLS_SHA
+  stage: publish-nuget
+  variables:
+    BASE_DIR: ./lib
+    PACKAGE_NAME: Softozor.HasuraHandling
+  before_script:
+  - export NEW_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type nuget --increase-version minor --min-version $MIN_PACKAGE_VERSION)
+  script:
+  - *publish-nuget
+  when: manual
+  only:
+    refs:
+    - master
+    changes:
+    - ./lib/Softozor.HasuraHandling/**/*
+
+publish-hasura-handling-major:
+  image: softozor/dotnet-publish:$TOOLS_SHA
+  stage: publish-nuget
+  variables:
+    BASE_DIR: ./lib
+    PACKAGE_NAME: Softozor.HasuraHandling
+  before_script:
+  - export NEW_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type nuget --increase-version major --min-version $MIN_PACKAGE_VERSION)
+  script:
+  - *publish-nuget
+  when: manual
+  only:
+    refs:
+    - master
+    changes:
+    - ./lib/Softozor.HasuraHandling/**/*
+
+acceptance-test:
+  stage: acceptance-test
+  image: ${TEST_IMAGE_NAME}:latest
+  # TODO: update Softozor.HasuraHandling package to latest version
+  script:
+    - |
+      behave --junit --junit-directory ./features/test-reports --tags ~wip \
+        -D project-root-folder="${CI_PROJECT_DIR}" \
+        -D api-url="${JELASTIC_API_URL}" \
+        -D api-token="${JELASTIC_ACCESS_TOKEN}" \
+        -D commit-sha="${CI_COMMIT_SHORT_SHA}"
+  artifacts:
+    reports:
+      junit:
+        - $CI_PROJECT_DIR/features/test-reports/*.xml
+    paths:
+      - $CI_PROJECT_DIR/features/test-reports/*.xml
+
+publish-pickles:
+  stage: report
+  image: softozor/pickles:2.21.1
+  variables:
+    APPLICATION_NAME: hasura-serverless
+    OUTPUT_DIR: $CI_PROJECT_DIR/pickles
+  script:
+    - |
+      mono /pickles/Pickles.exe --feature-directory=. \
+        --output-directory=${OUTPUT_DIR} \
+        --system-under-test-name=${APPLICATION_NAME} \
+        --system-under-test-version=$CI_COMMIT_SHORT_SHA \
+        --documentation-format=dhtml \
+        --language=en --exp --et 'wip' --enableComments=false
+  artifacts:
+    paths:
+      - $OUTPUT_DIR
