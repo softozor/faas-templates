@@ -38,8 +38,6 @@ publish-feature-test-image:
 acceptance-test:
   stage: acceptance-test
   image: ${TEST_IMAGE_NAME}:latest
-   before_script:
-  - update_nuget_packages.py --csproj ./features/examples/dotnet-hasura/DotNetHasura.csproj
   script:
     - |
       behave --junit --junit-directory ./features/test-reports --tags ~wip \
