@@ -1,17 +1,11 @@
 stages:
-- publish-docker
-- build
-- lib-test
-- publish-nuget
+- prepare
 - acceptance-test
 - report
 
 variables:
-  CONFIGURATION: Release
-  DOTNET_VERSION: "6.0"
   GIT_SUBMODULE_STRATEGY: recursive
   NUGET_PACKAGES_DIRECTORY: .nuget
-  SOURCE_NAME: gitlab-hasura-serverless
   TEST_IMAGE_NAME: softozor/hasura-serverless-test
 
 .docker-login: &docker-login
@@ -21,14 +15,8 @@ variables:
 - docker push $DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
 - docker push $DOCKER_IMAGE:latest
 
-.publish-nuget: &publish-nuget
-- dotnet nuget add source "${CI_API_V4_URL}/projects/$CI_PROJECT_ID/packages/nuget/index.json" --name ${SOURCE_NAME} --username $GITLAB_USER_LOGIN --password $PRIVATE_ACCESS_TOKEN --store-password-in-clear-text
-- python3 /usr/local/bin/set_assembly_version.py -f ${BASE_DIR}/${PACKAGE_NAME}/${PACKAGE_NAME}.csproj -v $NEW_VERSION
-- dotnet pack --no-build -c ${CONFIGURATION} ${BASE_DIR}/${PACKAGE_NAME}/${PACKAGE_NAME}.csproj
-- dotnet nuget push ${BASE_DIR}/${PACKAGE_NAME}/bin/${CONFIGURATION}/*.nupkg --source ${SOURCE_NAME}
-
 publish-feature-test-image:
-  stage: publish-docker
+  stage: prepare
   image: docker:latest
   variables:
     DOCKER_IMAGE: ${TEST_IMAGE_NAME}
@@ -41,101 +29,17 @@ publish-feature-test-image:
       --build-arg FAAS_CLI_VERSION=${FAAS_CLI_VERSION} \
       --build-arg PERSONAL_ACCESS_TOKEN=${PRIVATE_ACCESS_TOKEN} \
       --build-arg CI_API_V4_URL=${CI_API_V4_URL} \
-      --build-arg FAAS_CLIENT_PYPI_PROJECT_ID=${FAAS_CLIENT_PYPI_PROJECT_ID}
+      --build-arg PACKAGES_PYPI_PROJECT_ID=${PACKAGES_PYPI_PROJECT_ID}
   - *docker-push
   only:
     changes:
       - ci/feature-tests/*
 
-build:
-  stage: build
-  image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-alpine-amd64
-  before_script:
-  - dotnet restore --packages $NUGET_PACKAGES_DIRECTORY
-  script:
-  - dotnet publish -c ${CONFIGURATION} ./lib/Softozor.HasuraHandling/Softozor.HasuraHandling.csproj
-  - dotnet publish -c ${CONFIGURATION} ./lib/Softozor.HasuraHandling.Tests/Softozor.HasuraHandling.Tests.csproj
-  artifacts:
-    paths:
-    - $CI_PROJECT_DIR/lib/*/bin/${CONFIGURATION}/net${DOTNET_VERSION}
-  only:
-    changes:
-    - lib/**/*
-
-hasura-handling-tests:
-  stage: lib-test
-  image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-alpine-amd64
-  before_script:
-  - dotnet restore --packages $NUGET_PACKAGES_DIRECTORY
-  script:
-  - dotnet test --no-build -c ${CONFIGURATION} --logger:"junit;LogFilePath=.\test-reports\test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
-  artifacts:
-    reports:
-      junit:
-      - $CI_PROJECT_DIR/lib/*.Tests/test-reports/*.xml
-    paths:
-    - $CI_PROJECT_DIR/lib/*.Tests/test-reports/*.xml
-  only:
-    changes:
-    - lib/**/*
-
-publish-hasura-handling-patch:
-  image: softozor/dotnet-publish:$TOOLS_SHA
-  stage: publish-nuget
-  variables:
-    BASE_DIR: ./lib
-    PACKAGE_NAME: Softozor.HasuraHandling
-  before_script:
-  - export NEW_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type nuget --min-version $MIN_PACKAGE_VERSION)
-  - dotnet restore --packages $NUGET_PACKAGES_DIRECTORY
-  script:
-  - *publish-nuget
-  only:
-    refs:
-    - master
-    changes:
-    - ./lib/Softozor.HasuraHandling/**/*
-
-publish-hasura-handling-minor:
-  image: softozor/dotnet-publish:$TOOLS_SHA
-  stage: publish-nuget
-  variables:
-    BASE_DIR: ./lib
-    PACKAGE_NAME: Softozor.HasuraHandling
-  before_script:
-  - export NEW_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type nuget --increase-version minor --min-version $MIN_PACKAGE_VERSION)
-  - dotnet restore --packages $NUGET_PACKAGES_DIRECTORY
-  script:
-  - *publish-nuget
-  when: manual
-  only:
-    refs:
-    - master
-    changes:
-    - ./lib/Softozor.HasuraHandling/**/*
-
-publish-hasura-handling-major:
-  image: softozor/dotnet-publish:$TOOLS_SHA
-  stage: publish-nuget
-  variables:
-    BASE_DIR: ./lib
-    PACKAGE_NAME: Softozor.HasuraHandling
-  before_script:
-  - export NEW_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type nuget --increase-version major --min-version $MIN_PACKAGE_VERSION)
-  - dotnet restore --packages $NUGET_PACKAGES_DIRECTORY
-  script:
-  - *publish-nuget
-  when: manual
-  only:
-    refs:
-    - master
-    changes:
-    - ./lib/Softozor.HasuraHandling/**/*
-
 acceptance-test:
   stage: acceptance-test
   image: ${TEST_IMAGE_NAME}:latest
-  # TODO: update Softozor.HasuraHandling package to latest version
+   before_script:
+  - update_nuget_packages.py --csproj ./features/examples/dotnet-hasura/DotNetHasura.csproj
   script:
     - |
       behave --junit --junit-directory ./features/test-reports --tags ~wip \
