@@ -59,22 +59,25 @@ def path_to_serverless_functions(context):
 
 
 @fixture
-def faas_dotnet_definition_yaml(context):
-    context.faas_dotnet_definition_yaml = 'faas-dotnet.yml'
-    return context.faas_dotnet_definition_yaml
-
-
-@fixture
-def faas_nodejs_definition_yaml(context):
-    context.faas_nodejs_definition_yaml = 'faas-nodejs.yml'
-    return context.faas_nodejs_definition_yaml
-
-
-@fixture
 def path_to_jelastic_environment_manifest(context):
     context.path_to_jelastic_environment_manifest = os.path.join(
         context.project_root_folder, 'features', 'jelastic', 'manifest.yml')
     return context.path_to_jelastic_environment_manifest
+
+
+@fixture
+def jelastic_environment(context):
+    context.current_env_name = get_new_random_env_name(
+        context.control_client, context.commit_sha, context.worker_id)
+    path_to_manifest = context.path_to_jelastic_environment_manifest
+    context.jps_client.install_from_file(
+        path_to_manifest, context.current_env_name
+    )
+    context.current_env_info = context.control_client.get_env_info(
+        context.current_env_name)
+    yield context.current_env_name
+    if context.current_env_info.exists():
+        context.control_client.delete_env(context.current_env_name)
 
 
 @fixture
@@ -100,21 +103,6 @@ def faas_client(context):
     context.faas_client = faas_client_factory.create(
         faas_node_ip, username, password)
     context.faas_client.login()
-
-
-@fixture
-def jelastic_environment(context):
-    context.current_env_name = get_new_random_env_name(
-        context.control_client, context.commit_sha, context.worker_id)
-    path_to_manifest = context.path_to_jelastic_environment_manifest
-    context.jps_client.install_from_file(
-        path_to_manifest, context.current_env_name
-    )
-    context.current_env_info = context.control_client.get_env_info(
-        context.current_env_name)
-    yield context.current_env_name
-    if context.current_env_info.exists():
-        context.control_client.delete_env(context.current_env_name)
 
 
 fixtures_registry = {
