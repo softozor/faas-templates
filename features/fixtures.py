@@ -70,10 +70,12 @@ def jelastic_environment(context):
     print('START jelastic_environment')
     context.current_env_name = get_new_random_env_name(
         context.control_client, context.commit_sha, context.worker_id)
+    print('got random env name')
     path_to_manifest = context.path_to_jelastic_environment_manifest
     context.jps_client.install_from_file(
         path_to_manifest, context.current_env_name
     )
+    print('install jelastic env')
     context.current_env_info = context.control_client.get_env_info(
         context.current_env_name)
     print('END jelastic_environment')
