@@ -1,4 +1,4 @@
 -e git+https://github.com/behave/behave@bfda54448906d919ffd3fa4424b6d3c155a5388b#egg=behave
-faas-client==1.1.8
+faas-client==1.1.9
 jelastic-client==1.2.3
 python-gitlab==2.10.1
