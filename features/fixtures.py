@@ -67,6 +67,7 @@ def path_to_jelastic_environment_manifest(context):
 
 @fixture
 def jelastic_environment(context):
+    print('START jelastic_environment')
     context.current_env_name = get_new_random_env_name(
         context.control_client, context.commit_sha, context.worker_id)
     path_to_manifest = context.path_to_jelastic_environment_manifest
@@ -75,6 +76,7 @@ def jelastic_environment(context):
     )
     context.current_env_info = context.control_client.get_env_info(
         context.current_env_name)
+    print('END jelastic_environment')
     yield context.current_env_name
     if context.current_env_info.exists():
         context.control_client.delete_env(context.current_env_name)
@@ -82,6 +84,7 @@ def jelastic_environment(context):
 
 @fixture
 def faas_client(context):
+    print('START faas_client')
     faas_client_factory = FaasClientFactory(
         context.path_to_serverless_functions,
         context.faas_port)
@@ -103,6 +106,7 @@ def faas_client(context):
     context.faas_client = faas_client_factory.create(
         faas_node_ip, username, password)
     context.faas_client.login()
+    print('END faas_client')
 
 
 fixtures_registry = {
