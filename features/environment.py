@@ -20,5 +20,5 @@ def before_all(context):
     use_fixture(path_to_serverless_functions, context)
     use_fixture(faas_dotnet_definition_yaml, context)
     use_fixture(faas_nodejs_definition_yaml, context)
-    use_fixture(faas_client_factory, context)
+    use_fixture(faas_client, context)
     use_fixture(jelastic_environment, context)

@@ -6,6 +6,8 @@ from faas_client import FaasClientFactory
 from jelastic_client import JelasticClientFactory
 from test_utils import get_new_random_env_name
 
+from features.utils.sockets import host_has_port_open
+
 
 @fixture
 def random_seed(context):
@@ -52,7 +54,7 @@ def faas_port(context):
 @fixture
 def path_to_serverless_functions(context):
     context.path_to_serverless_functions = os.path.join(
-        context.project_root_folder, 'features', 'examples', 'functions')
+        context.project_root_folder, 'features', 'examples')
     return context.path_to_serverless_functions
 
 
@@ -76,12 +78,29 @@ def path_to_jelastic_environment_manifest(context):
 
 
 @fixture
-def faas_client_factory(context):
-    context.faas_client_factory = FaasClientFactory(
+def faas_client(context):
+    faas_client_factory = FaasClientFactory(
         context.path_to_serverless_functions,
         context.faas_port,
         context.faas_definition_yaml)
-    return context.faas_client_factory
+    faas_node_type = 'docker'
+    faas_node_group = 'faas'
+    faas_node_ip = context.current_env_info.get_node_ips(
+        node_type=faas_node_type, node_group=faas_node_group)[0]
+    assert host_has_port_open(faas_node_ip, context.faas_port)
+    username = context.file_client.read(
+        context.current_env_name,
+        '/var/lib/faasd/secrets/basic-auth-user',
+        node_type=faas_node_type,
+        node_group=faas_node_group)
+    password = context.file_client.read(
+        context.current_env_name,
+        '/var/lib/faasd/secrets/basic-auth-password',
+        node_type=faas_node_type,
+        node_group=faas_node_group)
+    context.faas_client = faas_client_factory.create(
+        faas_node_ip, username, password)
+    context.faas_client.login()
 
 
 @fixture
@@ -92,10 +111,10 @@ def jelastic_environment(context):
     context.jps_client.install_from_file(
         path_to_manifest, context.current_env_name
     )
-    yield context.current_env_name
-    env_info = context.control_client.get_env_info(
+    context.current_env_info = context.control_client.get_env_info(
         context.current_env_name)
-    if env_info.exists():
+    yield context.current_env_name
+    if context.current_env_info.exists():
         context.control_client.delete_env(context.current_env_name)
 
 
