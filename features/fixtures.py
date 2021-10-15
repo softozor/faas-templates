@@ -81,8 +81,7 @@ def path_to_jelastic_environment_manifest(context):
 def faas_client(context):
     faas_client_factory = FaasClientFactory(
         context.path_to_serverless_functions,
-        context.faas_port,
-        context.faas_definition_yaml)
+        context.faas_port)
     faas_node_type = 'docker'
     faas_node_group = 'faas'
     faas_node_ip = context.current_env_info.get_node_ips(
