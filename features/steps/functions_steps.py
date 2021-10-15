@@ -15,27 +15,27 @@ def step_impl(context, function_name):
 @given(u'it is pushed')
 def step_impl(context):
     exit_code = context.faas_client.push(
-        context.current_path_to_faas_configuration, context.function_name)
+        context.current_path_to_faas_configuration, context.current_function)
     assert exit_code == 0
 
 
 @given(u'it is built')
 def step_impl(context):
     exit_code = context.faas_client.build(
-        context.current_path_to_faas_configuration, context.function_name)
+        context.current_path_to_faas_configuration, context.current_function)
     assert exit_code == 0
 
 
 @when(u'I build it')
 def step_impl(context):
     context.exit_code = context.faas_client.build(
-        context.current_path_to_faas_configuration, context.function_name)
+        context.current_path_to_faas_configuration, context.current_function)
 
 
 @when(u'I deploy it')
 def step_impl(context):
     context.exit_code = context.faas_client.deploy(
-        context.function_name)
+        context.current_function)
 
 
 @then(u'I get no error')
