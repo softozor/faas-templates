@@ -16,6 +16,7 @@ RUN apk add --update git
 COPY --from=build /usr/local/bin/faas-cli /usr/local/bin/faas-cli
 COPY --from=build /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
 COPY --from=build /usr/local/bin /usr/local/bin
+COPY --from=build /usr/local/lib /usr/local/lib
 # this copy is necessary as long as we clone behave's git repo
 COPY --from=build /src /src
 
