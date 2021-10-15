@@ -11,7 +11,6 @@ RUN apt update && apt install -y gcc wget git curl \
 
 FROM python:3.9-slim
 
-COPY --from=docker-tools /usr/local/bin/get_latest_package_version.py /usr/local/bin/get_latest_package_version.py
 COPY --from=build /usr/local/bin/faas-cli /usr/local/bin/faas-cli
 COPY --from=build /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
 COPY --from=build /usr/local/bin /usr/local/bin
