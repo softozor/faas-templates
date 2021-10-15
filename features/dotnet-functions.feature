@@ -7,7 +7,7 @@ Feature: .NET functions
   Background: Faas configuration
     
     Given the faas configuration 'faas-dotnet.yml'
-    And the function 'dotnet-fnc'
+    And the function 'dotnet-hasura-example-fnc'
     
   Scenario: The function builds
     
