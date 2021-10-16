@@ -4,9 +4,8 @@ import random
 from behave import fixture
 from faas_client import FaasClientFactory
 from jelastic_client import JelasticClientFactory
+from softozor_test_utils.sockets import host_has_port_open
 from test_utils import get_new_random_env_name
-
-from features.utils.sockets import host_has_port_open
 
 
 @fixture
