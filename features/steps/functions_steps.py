@@ -1,5 +1,7 @@
 import os
 
+from behave import *
+
 
 @given(u'the faas configuration \'{faas_configuration_file}\'')
 def step_impl(context, faas_configuration_file):
