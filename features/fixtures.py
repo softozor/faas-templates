@@ -75,8 +75,9 @@ def jelastic_environment(context):
     context.current_env_info = context.control_client.get_env_info(
         context.current_env_name)
     yield context.current_env_name
-    if context.current_env_info.exists():
-        context.control_client.delete_env(context.current_env_name)
+    # TODO: reactivate!
+    # if context.current_env_info.exists():
+    #     context.control_client.delete_env(context.current_env_name)
 
 
 @fixture
@@ -89,7 +90,6 @@ def faas_client(context):
     faas_node_ip = context.current_env_info.get_node_ips(
         node_type=faas_node_type, node_group=faas_node_group)[0]
     assert host_has_port_open(faas_node_ip, context.faas_port)
-    context.faas_url = f'http://{faas_node_ip}:{context.faas_port}'
     username = context.file_client.read(
         context.current_env_name,
         '/var/lib/faasd/secrets/basic-auth-user',

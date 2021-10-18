@@ -4,4 +4,4 @@ This repository hosts the [openfaas](https://www.openfaas.com/) function templat
 
 The templates contained in this repository make wrappers available that make sure the function responses comply to [the hasura directives](https://hasura.io/docs/2.0/graphql/core/actions/action-handlers.html).
 
-Have a look at the [examples](/features/examples).
+Have a look at the [living documentation](/features) (the `*.feature` files) that relates to the [examples](/features/examples).

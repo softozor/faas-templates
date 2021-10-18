@@ -52,7 +52,7 @@ def step_impl(context):
 def step_impl(context):
     payload = context.text
     context.response = requests.post(
-        f'{context.faas_url}/{context.current_function}', data=payload)
+        f'http://{context.faas_client.endpoint}/{context.current_function}', data=payload)
     print('status code = ', context.response.status_code)
 
 
