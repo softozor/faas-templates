@@ -89,6 +89,7 @@ def faas_client(context):
     faas_node_ip = context.current_env_info.get_node_ips(
         node_type=faas_node_type, node_group=faas_node_group)[0]
     assert host_has_port_open(faas_node_ip, context.faas_port)
+    context.faas_url = f'http://{faas_node_ip}:{context.faas_port}'
     username = context.file_client.read(
         context.current_env_name,
         '/var/lib/faasd/secrets/basic-auth-user',

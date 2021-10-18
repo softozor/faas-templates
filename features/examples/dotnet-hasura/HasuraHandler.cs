@@ -19,6 +19,9 @@ public class HasuraHandler : IActionHandler<Input, Output>
     {
       _logger.LogInformation($"Calling hasura handler");
     
-      return Task.FromResult<Output>(new Output());
+      return Task.FromResult<Output>(new Output
+      {
+        Value = input.Value
+      });
     }
 }

@@ -8,5 +8,7 @@ module.exports = ({ app }, wrap) => {
 }
 
 const handler = async input => {
-  return input
+  return {
+    value: input.value
+  }
 }

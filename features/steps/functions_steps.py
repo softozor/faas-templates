@@ -1,5 +1,6 @@
 import os
 
+import requests as requests
 from behave import *
 
 
@@ -28,6 +29,13 @@ def step_impl(context):
     assert exit_code == 0
 
 
+@given("it is up")
+def step_impl(context):
+    exit_code = context.faas_client.up(
+        context.current_path_to_faas_configuration, context.current_function)
+    assert exit_code == 0
+
+
 @when(u'I build it')
 def step_impl(context):
     context.exit_code = context.faas_client.build(
@@ -40,6 +48,28 @@ def step_impl(context):
         context.current_function)
 
 
+@when("I invoke it with payload")
+def step_impl(context):
+    payload = context.text
+    context.response = requests.post(
+        f'{context.faas_url}/{context.current_function}', data=payload)
+    print('status code = ', context.response.status_code)
+
+
 @then(u'I get no error')
 def step_impl(context):
     assert 0 == context.exit_code
+
+
+@then("I get a success response")
+def step_impl(context):
+    assert context.response.status_code == 200
+
+
+@step("the response payload")
+def step_impl(context):
+    expected_payload = context.text
+    actual_payload = context.response.json()
+    print('expected payload = ', expected_payload)
+    print('actual payload   = ', actual_payload)
+    assert expected_payload == actual_payload

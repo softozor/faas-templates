@@ -21,8 +21,24 @@ Feature: Nodejs functions
     When I deploy it
     Then I get no error
     
-  @wip  
   Scenario: The function returns the expected success response
+    
+    Given it is up
+    When I invoke it with payload
+    """
+    {
+      "input": {
+        "value": 10
+      }
+    }
+    """
+    Then I get a success response
+    And the response payload
+    """
+    {
+      "value": 10
+    }
+    """
     
   @wip  
   Scenario: The function returns the expected failure response
