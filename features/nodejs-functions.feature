@@ -21,6 +21,7 @@ Feature: Nodejs functions
     When I deploy it
     Then I get no error
     
+  @wip  
   Scenario: The function returns the expected success response
     
     Given it is up
