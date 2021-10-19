@@ -16,15 +16,16 @@ Feature: Nodejs functions
     
   Scenario: The function gets deployed on the faas engine
     
-    Given it is built
+    Given I am logged on the faas engine
+    And it is built
     And it is pushed
     When I deploy it
     Then I get no error
     
-  @wip  
   Scenario: The function returns the expected success response
     
-    Given it is up
+    Given I am logged on the faas engine
+    And it is up
     When I invoke it with payload
     """
     {

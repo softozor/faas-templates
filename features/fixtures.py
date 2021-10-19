@@ -102,7 +102,6 @@ def faas_client(context):
         node_group=faas_node_group)
     context.faas_client = faas_client_factory.create(
         faas_node_ip, username, password)
-    context.faas_client.login()
 
 
 fixtures_registry = {

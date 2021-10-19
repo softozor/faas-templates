@@ -3,6 +3,10 @@ import os
 import requests as requests
 from behave import *
 
+@given(u'I am logged on the faas engine')
+def step_impl(context):
+    context.faas_client.login()
+
 
 @given(u'the faas configuration \'{faas_configuration_file}\'')
 def step_impl(context, faas_configuration_file):
