@@ -35,8 +35,14 @@ def step_impl(context):
 
 @given("it is up")
 def step_impl(context):
-    exit_code = context.faas_client.up(
+    exit_code = context.faas_client.build(
         context.current_path_to_faas_configuration, context.current_function)
+    assert exit_code == 0
+    exit_code = context.faas_client.push(
+        context.current_path_to_faas_configuration, context.current_function)
+    assert exit_code == 0
+    exit_code = context.faas_client.deploy(
+        context.current_function)
     assert exit_code == 0
 
 

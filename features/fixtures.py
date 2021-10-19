@@ -83,7 +83,6 @@ def jelastic_environment(context):
 @fixture
 def faas_client(context):
     faas_client_factory = FaasClientFactory(
-        context.path_to_serverless_functions,
         context.faas_port)
     faas_node_type = 'docker'
     faas_node_group = 'faas'
