@@ -37,6 +37,7 @@ acceptance-test:
   image: ${TEST_IMAGE_NAME}:latest
   before_script:
     - *docker-login
+    - rm -f /tmp/output
   script:
     - |
       behave --junit --junit-directory ./features/test-reports --tags ~wip \
@@ -44,6 +45,8 @@ acceptance-test:
         -D api-url="${JELASTIC_API_URL}" \
         -D api-token="${JELASTIC_ACCESS_TOKEN}" \
         -D commit-sha="${CI_COMMIT_SHORT_SHA}"
+  after_script:
+    - cat /tmp/output
   artifacts:
     reports:
       junit:
