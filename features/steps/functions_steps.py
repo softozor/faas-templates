@@ -42,7 +42,7 @@ def step_impl(context):
         context.current_path_to_faas_configuration, context.current_function)
     assert exit_code == 0
     exit_code = context.faas_client.deploy(
-        context.current_function)
+        context.current_path_to_faas_configuration, context.current_function)
     assert exit_code == 0
 
 
@@ -55,14 +55,14 @@ def step_impl(context):
 @when(u'I deploy it')
 def step_impl(context):
     context.exit_code = context.faas_client.deploy(
-        context.current_function)
+        context.current_path_to_faas_configuration, context.current_function)
 
 
 @when("I invoke it with payload")
 def step_impl(context):
     payload = context.text
     context.response = requests.post(
-        f'http://{context.faas_client.endpoint}/{context.current_function}', data=payload)
+        f'http://{context.faas_client.endpoint}/function/{context.current_function}', data=payload)
     print('status code = ', context.response.status_code)
 
 
