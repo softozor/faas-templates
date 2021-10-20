@@ -2,7 +2,7 @@ version: 1.0
 provider:
   name: openfaas
 functions:
-  nodejs-hasura-example-fnc:
+  hasura-nodejs:
     lang: node-hasura
     handler: ./nodejs-hasura
     image: softozor/nodejs-hasura-example-fnc:latest

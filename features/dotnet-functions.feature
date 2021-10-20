@@ -4,10 +4,13 @@ Feature: .NET functions
   I want to build .NET functions,
   so that I can benefit of the whole .NET ecosystem.
   
+  # TODO: write one single feature file with scenario outlines
+  # TODO: try to login upon faas client creation
+  
   Background: Faas configuration
     
     Given the faas configuration 'faas-dotnet.yml'
-    And the function 'dotnet-hasura-example-fnc'
+    And the function 'hasura-dotnet'
     
   Scenario: The function builds
     

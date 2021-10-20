@@ -7,11 +7,11 @@ using Microsoft.Extensions.Logging;
 
 [Route("[controller]")]
 [ApiController]
-public class HasuraController : ActionControllerBase<Input, Output>
+public class Controller : ActionControllerBase<Input, Output>
 {
-    public HasuraController(
+    public Controller(
       IActionHandler<Input, Output> handler,
-      ILogger<HasuraController> logger
+      ILogger<Controller> logger
     ) : base(handler, logger)
     {
     }

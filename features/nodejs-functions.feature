@@ -7,7 +7,7 @@ Feature: Nodejs functions
   Background: Faas configuration
     
     Given the faas configuration 'faas-nodejs.yml'
-    And the function 'nodejs-hasura-example-fnc'
+    And the function 'hasura-nodejs'
 
   Scenario: The function builds
     

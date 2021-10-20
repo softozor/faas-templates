@@ -2,7 +2,7 @@ version: 1.0
 provider:
   name: openfaas
 functions:
-  dotnet-hasura-example-fnc:
+  hasura-dotnet:
     lang: dotnet-hasura
     handler: ./dotnet-hasura
     image: softozor/dotnet-hasura-example-fnc:latest
