@@ -103,7 +103,12 @@ def step_impl(context):
     assert context.response.status_code == 200
 
 
-@step(u'the response payload')
+@then("I get a bad request")
+def step_impl(context):
+    assert context.response.status_code == 400
+
+
+@then(u'the response payload')
 def step_impl(context):
     expected_payload = json.loads(context.text)
     actual_payload = json.loads(context.response.text)

@@ -8,6 +8,10 @@ module.exports = ({ app }, wrap) => {
 }
 
 const handler = async input => {
+  if(!('value' in input)) {
+    throw 'input has no \'value\' property'
+  }
+  
   return {
     value: input.value
   }

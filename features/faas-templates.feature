@@ -61,5 +61,28 @@ Feature: Faas templates
 #      | hasura-dotnet |
       | hasura-nodejs |
     
-  @wip
-  Scenario: The function returns the expected failure response  
+  Scenario Outline: The function returns the expected failure response
+    
+    Given I am logged on the faas engine
+    And the function '<function name>'
+    And it is up
+    When I invoke it with payload
+    """
+    {
+      "input": {
+        "unsupportedProperty": 10
+      }
+    }
+    """
+    Then I get a bad request
+    And the response payload
+    """
+    {
+      "message": 10
+    }
+    """
+    
+    Examples:
+      | function name |
+#      | hasura-dotnet |
+      | hasura-nodejs |
