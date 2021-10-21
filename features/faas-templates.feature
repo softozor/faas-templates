@@ -35,7 +35,6 @@ Feature: Faas templates
 #      | hasura-dotnet |
       | hasura-nodejs |
     
-  @current  
   Scenario Outline: The function returns the expected success response
     
     Given I am logged on the faas engine
