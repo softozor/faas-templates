@@ -22,6 +22,7 @@ Feature: Nodejs functions
     When I deploy it
     Then I get no error
     
+  @current  
   Scenario: The function returns the expected success response
     
     Given I am logged on the faas engine

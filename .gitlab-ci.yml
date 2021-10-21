@@ -40,7 +40,7 @@ acceptance-test:
     - rm -f /tmp/output
   script:
     - |
-      behave --junit --junit-directory ./features/test-reports --tags ~wip \
+      behave --junit --junit-directory ./features/test-reports --tags current \
         -D project-root-folder="${CI_PROJECT_DIR}" \
         -D api-url="${JELASTIC_API_URL}" \
         -D api-token="${JELASTIC_ACCESS_TOKEN}" \
