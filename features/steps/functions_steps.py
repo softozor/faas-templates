@@ -2,6 +2,8 @@ import os
 
 import requests as requests
 from behave import *
+from softozor_test_utils import wait_until
+
 
 @given(u'I am logged on the faas engine')
 def step_impl(context):
@@ -33,7 +35,7 @@ def step_impl(context):
     assert exit_code == 0
 
 
-@given("it is up")
+@given(u'it is up')
 def step_impl(context):
     exit_code = context.faas_client.build(
         context.current_path_to_faas_configuration, context.current_function)
@@ -58,11 +60,25 @@ def step_impl(context):
         context.current_path_to_faas_configuration, context.current_function)
 
 
-@when("I invoke it with payload")
+def can_invoke_function(url, payload, timeout_in_sec=120, period_in_sec=5):
+    def invoke():
+        response = requests.post(url, data=payload)
+        return response.status_code < 500
+
+    try:
+        wait_until(lambda: invoke(),
+                   timeout_in_sec=timeout_in_sec, period_in_sec=period_in_sec)
+        return True
+    except TimeoutError:
+        return False
+
+
+@when(u'I invoke it with payload')
 def step_impl(context):
     payload = context.text
-    context.response = requests.post(
-        f'http://{context.faas_client.endpoint}/function/{context.current_function}', data=payload)
+    function_url = f'http://{context.faas_client.endpoint}/function/{context.current_function}'
+    assert can_invoke_function(function_url, payload)
+    context.response = requests.post(function_url, data=payload)
     print('status code = ', context.response.status_code)
 
 
@@ -71,12 +87,12 @@ def step_impl(context):
     assert 0 == context.exit_code
 
 
-@then("I get a success response")
+@then(u'I get a success response')
 def step_impl(context):
     assert context.response.status_code == 200
 
 
-@step("the response payload")
+@step(u'the response payload')
 def step_impl(context):
     expected_payload = context.text
     actual_payload = context.response.json()
