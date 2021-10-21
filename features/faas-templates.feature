@@ -21,6 +21,7 @@ Feature: Faas templates
       | hasura-dotnet |
       | hasura-nodejs |
     
+  @current  
   Scenario Outline: The function gets deployed on the faas engine
     
     Given I am logged on the faas engine
@@ -32,7 +33,7 @@ Feature: Faas templates
     
     Examples:
       | function name |
-      | hasura-dotnet |
+#      | hasura-dotnet |
       | hasura-nodejs |
     
   Scenario Outline: The function returns the expected success response
