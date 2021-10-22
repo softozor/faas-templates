@@ -56,9 +56,9 @@ def step_impl(context):
 
 # testing if the function is ready is not enough, we really need to wait until
 # we can really invoke it
-def can_invoke_function(url, payload, timeout_in_sec=120, period_in_sec=5):
+def can_invoke_function(url, timeout_in_sec=120, period_in_sec=5):
     def invoke():
-        response = requests.post(url, json=payload)
+        response = requests.post(url)
         return response.status_code < 500
 
     try:
@@ -73,7 +73,7 @@ def can_invoke_function(url, payload, timeout_in_sec=120, period_in_sec=5):
 def step_impl(context):
     payload = json.loads(context.text)
     function_url = f'http://{context.faas_client.endpoint}/function/{context.current_function}'
-    assert can_invoke_function(function_url, payload)
+    assert can_invoke_function(function_url)
     context.response = requests.post(function_url, json=payload)
 
 
