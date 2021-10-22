@@ -1,5 +1,4 @@
 import json
-import os
 
 import requests as requests
 from behave import *
@@ -55,9 +54,15 @@ def step_impl(context):
         context.path_to_serverless_configuration, context.current_function)
 
 
-def can_invoke_function(faas_client, function_name, timeout_in_sec=120, period_in_sec=5):
+# testing if the function is ready is not enough, we really need to wait until
+# we can really invoke it
+def can_invoke_function(url, payload, timeout_in_sec=120, period_in_sec=5):
+    def invoke():
+        response = requests.post(url, json=payload)
+        return response.status_code < 500
+
     try:
-        wait_until(lambda: faas_client.is_ready(function_name),
+        wait_until(lambda: invoke(),
                    timeout_in_sec=timeout_in_sec, period_in_sec=period_in_sec)
         return True
     except TimeoutError:
@@ -67,8 +72,8 @@ def can_invoke_function(faas_client, function_name, timeout_in_sec=120, period_i
 @when(u'I invoke it with payload')
 def step_impl(context):
     payload = json.loads(context.text)
-    assert can_invoke_function(context.faas_client, context.current_function)
     function_url = f'http://{context.faas_client.endpoint}/function/{context.current_function}'
+    assert can_invoke_function(function_url, payload)
     context.response = requests.post(function_url, json=payload)
 
 
