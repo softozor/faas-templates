@@ -4,12 +4,6 @@ Feature: Faas templates
   I want to use faas templates specific for hasura,
   so that I can reduce the development overhead.
   
-  # TODO: try to login upon faas client creation
-  
-  Background: Faas configuration
-    
-    Given the faas configuration 'faas.yml'
-
   Scenario Outline: The function builds
 
     Given the function '<function name>'
@@ -23,8 +17,7 @@ Feature: Faas templates
     
   Scenario Outline: The function gets deployed on the faas engine
     
-    Given I am logged on the faas engine
-    And the function '<function name>'
+    Given the function '<function name>'
     And it is built
     And it is pushed
     When I deploy it
@@ -37,8 +30,7 @@ Feature: Faas templates
     
   Scenario Outline: The function returns the expected success response
     
-    Given I am logged on the faas engine
-    And the function '<function name>'
+    Given the function '<function name>'
     And it is up
     When I invoke it with payload
     """
@@ -63,8 +55,7 @@ Feature: Faas templates
     
   Scenario Outline: The function returns the expected failure response
     
-    Given I am logged on the faas engine
-    And the function '<function name>'
+    Given the function '<function name>'
     And it is up
     When I invoke it with payload
     """

@@ -17,6 +17,6 @@ def before_all(context):
     use_fixture(project_root_folder, context)
     use_fixture(path_to_jelastic_environment_manifest, context)
     use_fixture(faas_port, context)
-    use_fixture(path_to_serverless_functions, context)
+    use_fixture(path_to_serverless_configuration, context)
     use_fixture(jelastic_environment, context)
     use_fixture(faas_client, context)
