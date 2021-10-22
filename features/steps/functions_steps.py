@@ -55,9 +55,9 @@ def step_impl(context):
         context.path_to_serverless_configuration, context.current_function)
 
 
-def can_invoke_function(faas_client, timeout_in_sec=120, period_in_sec=5):
+def can_invoke_function(faas_client, function_name, timeout_in_sec=120, period_in_sec=5):
     try:
-        wait_until(lambda: faas_client.is_ready(),
+        wait_until(lambda: faas_client.is_ready(function_name),
                    timeout_in_sec=timeout_in_sec, period_in_sec=period_in_sec)
         return True
     except TimeoutError:
@@ -67,10 +67,9 @@ def can_invoke_function(faas_client, timeout_in_sec=120, period_in_sec=5):
 @when(u'I invoke it with payload')
 def step_impl(context):
     payload = json.loads(context.text)
-    assert can_invoke_function(context.faas_client)
+    assert can_invoke_function(context.faas_client, context.current_function)
     function_url = f'http://{context.faas_client.endpoint}/function/{context.current_function}'
     context.response = requests.post(function_url, json=payload)
-    print('status code = ', context.response.status_code)
 
 
 @then(u'I get no error')
@@ -80,18 +79,16 @@ def step_impl(context):
 
 @then(u'I get a success response')
 def step_impl(context):
-    assert context.response.status_code == 200
+    assert context.response.status_code == 200, f'status code is {context.response.status_code}'
 
 
 @then("I get a bad request")
 def step_impl(context):
-    assert context.response.status_code == 400
+    assert context.response.status_code == 400, f'status code is {context.response.status_code}'
 
 
 @then(u'the response payload')
 def step_impl(context):
     expected_payload = json.loads(context.text)
     actual_payload = json.loads(context.response.text)
-    print('expected payload = ', expected_payload)
-    print('actual payload   = ', actual_payload)
     assert expected_payload == actual_payload
