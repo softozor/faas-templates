@@ -12,7 +12,7 @@ Feature: Faas templates
 
     Examples:
       | function name |
-#      | hasura-dotnet |
+      | hasura-dotnet |
       | hasura-nodejs |
     
   Scenario Outline: The function gets deployed on the faas engine
@@ -25,7 +25,7 @@ Feature: Faas templates
     
     Examples:
       | function name |
-#      | hasura-dotnet |
+      | hasura-dotnet |
       | hasura-nodejs |
     
   Scenario Outline: The function returns the expected success response
@@ -50,7 +50,7 @@ Feature: Faas templates
     
     Examples:
       | function name |
-#      | hasura-dotnet |
+      | hasura-dotnet |
       | hasura-nodejs |
     
   Scenario Outline: The function returns the expected failure response
@@ -69,7 +69,7 @@ Feature: Faas templates
     And the response payload
     """
     {
-      "message": 10
+      "message": "input has no 'value' property"
     }
     """
     
