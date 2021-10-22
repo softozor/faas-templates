@@ -10,13 +10,11 @@ module.exports = fn => {
       console.error(`Caught error: ${error}`)
       if (error instanceof HttpError) {
         return res.status(error.status).json({
-          code: error.name,
           message: error.message
         })
       } else {
         return res.status(400).json({
-          code: error.name,
-          message: error.message
+          message: error
         })
       }
     }

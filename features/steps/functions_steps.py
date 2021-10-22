@@ -84,16 +84,16 @@ def step_impl(context):
 
 @then(u'I get a success response')
 def step_impl(context):
-    assert context.response.status_code == 200, f'status code is {context.response.status_code}'
+    assert context.response.status_code == 200, f'expected 200, got {context.response.status_code}'
 
 
 @then("I get a bad request")
 def step_impl(context):
-    assert context.response.status_code == 400, f'status code is {context.response.status_code}'
+    assert context.response.status_code == 400, f'expected 400, got {context.response.status_code}'
 
 
 @then(u'the response payload')
 def step_impl(context):
     expected_payload = json.loads(context.text)
     actual_payload = json.loads(context.response.text)
-    assert expected_payload == actual_payload
+    assert expected_payload == actual_payload, f'expected {expected_payload}, got {actual_payload}'
