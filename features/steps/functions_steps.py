@@ -55,23 +55,9 @@ def step_impl(context):
         context.path_to_serverless_configuration, context.current_function)
 
 
-# TODO: we should rather make faas-cli describe function_name and extract status
-# Name:                hasura-nodejs
-# Status:              Ready
-# Replicas:            1
-# Available replicas:  1
-# Invocations:         4
-# Image:               
-# Function process:    node index.js
-# URL:                 http://127.0.0.1:8080/function/hasura-nodejs
-# Async URL:           http://127.0.0.1:8080/async-function/hasura-nodejs
-def can_invoke_function(url, payload, timeout_in_sec=120, period_in_sec=5):
-    def invoke():
-        response = requests.post(url, json=payload)
-        return response.status_code < 500
-
+def can_invoke_function(faas_client, timeout_in_sec=120, period_in_sec=5):
     try:
-        wait_until(lambda: invoke(),
+        wait_until(lambda: faas_client.is_ready(),
                    timeout_in_sec=timeout_in_sec, period_in_sec=period_in_sec)
         return True
     except TimeoutError:
@@ -81,8 +67,8 @@ def can_invoke_function(url, payload, timeout_in_sec=120, period_in_sec=5):
 @when(u'I invoke it with payload')
 def step_impl(context):
     payload = json.loads(context.text)
+    assert can_invoke_function(context.faas_client)
     function_url = f'http://{context.faas_client.endpoint}/function/{context.current_function}'
-    assert can_invoke_function(function_url, payload)
     context.response = requests.post(function_url, json=payload)
     print('status code = ', context.response.status_code)
 

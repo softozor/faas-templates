@@ -16,4 +16,5 @@ async function init() {
   })
 }
 
+// do not await this call
 init()
