@@ -1,18 +1,20 @@
-namespace FaasTemplates;
+using Microsoft.AspNetCore.Builder;
+using HasuraFunction;
+using Microsoft.Extensions.DependencyInjection;
+using Softozor.HasuraHandling.ConfigurationManagement;
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+var builder = WebApplication.CreateBuilder(args);
 
-public static class Program
-{
-    public static void Main(string[] args)
-    {
-        CreateHostBuilder(args).Build().Run();
-    }
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson();
 
-    public static IHostBuilder CreateHostBuilder(string[] args)
-    {
-        return Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-    }
-}
+builder.Services.AddConfigurationManagement();
+
+BuilderSetup.Configure(builder);
+
+var app = builder.Build();
+
+AppSetup.Configure(app);
+
+app.Run();
