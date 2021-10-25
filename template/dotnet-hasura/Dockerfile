@@ -23,10 +23,12 @@ COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 WORKDIR /app
 COPY --from=builder /app .
 
+ENV ASPNETCORE_URLS "http://+:8080"
+
 ENV fprocess="dotnet ./root.dll"
 ENV cgi_headers="true"
 ENV mode="http"
-ENV upstream_url="http://localhost:80"
+ENV upstream_url="http://localhost:8080"
 EXPOSE 8080
 
 HEALTHCHECK --interval=3s CMD [ -e /tmp/.lock ] || exit 1
