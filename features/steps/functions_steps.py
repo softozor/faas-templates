@@ -63,3 +63,8 @@ def step_impl(context):
     expected_payload = json.loads(context.text)
     actual_payload = json.loads(context.response.text)
     assert expected_payload == actual_payload, f'expected {expected_payload}, got {actual_payload}'
+
+
+@then("she gets status code {status_code}")
+def step_impl(context, status_code):
+    assert context.response.status_code == status_code
