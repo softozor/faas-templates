@@ -3,62 +3,57 @@ import json
 from behave import *
 
 
-@given(u'I am logged on the faas engine')
-def step_impl(context):
-    context.faas_client.login()
-
-
 @given(u'the function \'{function_name}\'')
 def step_impl(context, function_name):
     context.current_function = function_name
 
 
-@given(u'it is pushed')
+@given(u'she has pushed it')
 def step_impl(context):
     exit_code = context.developer.push_function(context.current_function)
     assert exit_code == 0
 
 
-@given(u'it is built')
+@given(u'the developer has built it')
 def step_impl(context):
     exit_code = context.developer.build_function(context.current_function)
     assert exit_code == 0
 
 
-@given(u'it is up')
+@given(u'the developer has put it up')
 def step_impl(context):
     exit_code = context.developer.up_function(context.current_function)
     assert exit_code == 0
 
 
-@when(u'I build it')
+@when(u'the developer builds it')
 def step_impl(context):
     context.exit_code = context.developer.build_function(context.current_function)
 
 
-@when(u'I deploy it')
+@when(u'she deploys it')
 def step_impl(context):
     context.exit_code = context.developer.deploy_function(context.current_function)
 
 
-@when(u'I invoke it with payload')
+@when(u'she invokes it with payload')
 def step_impl(context):
     payload = json.loads(context.text)
     context.response = context.developer.invoke_function(
         context.current_function, payload)
 
 
-@then(u'I get no error')
+@then(u'she gets no error')
 def step_impl(context):
     assert 0 == context.exit_code
 
 
-@then(u'I get a success response')
+@then(u'she gets a success response')
 def step_impl(context):
     assert context.response.status_code == 200, f'expected 200, got {context.response.status_code}'
 
 
-@then("I get a bad request")
+@then("she gets a bad request")
 def step_impl(context):
     assert context.response.status_code == 400, f'expected 400, got {context.response.status_code}'
 

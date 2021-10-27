@@ -7,8 +7,8 @@ Feature: Faas templates
   Scenario Outline: The function builds
 
     Given the function '<function name>'
-    When I build it
-    Then I get no error
+    When the developer builds it
+    Then she gets no error
 
     Examples:
       | function name |
@@ -18,10 +18,10 @@ Feature: Faas templates
   Scenario Outline: The function gets deployed on the faas engine
     
     Given the function '<function name>'
-    And it is built
-    And it is pushed
-    When I deploy it
-    Then I get no error
+    And the developer has built it
+    And she has pushed it
+    When she deploys it
+    Then she gets no error
     
     Examples:
       | function name |
@@ -30,9 +30,12 @@ Feature: Faas templates
     
   Scenario Outline: The function returns the expected success response
     
+    A function is up after it has been built, pushed, and deployed  
+    to the faas engine.
+    
     Given the function '<function name>'
-    And it is up
-    When I invoke it with payload
+    And the developer has put it up
+    When she invokes it with payload
     """
     {
       "input": {
@@ -40,7 +43,7 @@ Feature: Faas templates
       }
     }
     """
-    Then I get a success response
+    Then she gets a success response
     And the response payload
     """
     {
@@ -55,9 +58,12 @@ Feature: Faas templates
     
   Scenario Outline: The function returns the expected failure response
     
+    A function is up after it has been built, pushed, and deployed  
+    to the faas engine.
+    
     Given the function '<function name>'
-    And it is up
-    When I invoke it with payload
+    And the developer has put it up
+    When she invokes it with payload
     """
     {
       "input": {
@@ -65,7 +71,7 @@ Feature: Faas templates
       }
     }
     """
-    Then I get a bad request
+    Then she gets a bad request
     And the response payload
     """
     {

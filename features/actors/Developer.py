@@ -1,5 +1,5 @@
 import requests
-from softozor_test_utils import wait_until
+from softozor_test_utils.timing import fail_after_timeout
 
 
 class Developer:
@@ -31,15 +31,22 @@ class Developer:
         return exit_code
 
     def invoke_function(self, function_name, payload=None):
-        function_url = f'http://{self.__faas_client.endpoint}/function/{function_name}'
-        return requests.post(function_url, json=payload)
+        assert self.__can_invoke_function(function_name, payload)
+        return self.__do_invoke_function(function_name, payload)
 
     def __is_function_ready(self, function_name):
         def is_ready():
             return self.__faas_client.is_ready(function_name)
 
-        try:
-            wait_until(lambda: is_ready())
-            return True
-        except TimeoutError:
-            return False
+        return fail_after_timeout(lambda: is_ready())
+
+    def __can_invoke_function(self, function_name, payload):
+        def can_invoke():
+            response = self.__do_invoke_function(function_name, payload)
+            return response.status_code < 500
+
+        return fail_after_timeout(lambda: can_invoke(), timeout_in_sec=30, period_in_sec=0.5)
+
+    def __do_invoke_function(self, function_name, payload):
+        function_url = f'http://{self.__faas_client.endpoint}/function/{function_name}'
+        return requests.post(function_url, json=payload)
