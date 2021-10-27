@@ -67,4 +67,4 @@ def step_impl(context):
 
 @then("she gets status code {status_code}")
 def step_impl(context, status_code):
-    assert context.response.status_code == status_code
+    assert context.response.status_code == status_code, f'expected {status_code}, got {context.response.status_code}'
