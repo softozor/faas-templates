@@ -65,6 +65,6 @@ def step_impl(context):
     assert expected_payload == actual_payload, f'expected {expected_payload}, got {actual_payload}'
 
 
-@then("she gets status code {status_code}")
+@then("she gets status code {status_code:d}")
 def step_impl(context, status_code):
     assert context.response.status_code == status_code, f'expected {status_code}, got {context.response.status_code}'
