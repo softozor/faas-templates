@@ -28,6 +28,7 @@ Feature: Faas templates
       | hasura-dotnet |
       | hasura-nodejs |
     
+  @current  
   Scenario Outline: The function returns the expected success response
     
     Given the function '<function name>'
