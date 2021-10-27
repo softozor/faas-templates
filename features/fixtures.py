@@ -7,6 +7,8 @@ from jelastic_client import JelasticClientFactory
 from softozor_test_utils.sockets import host_has_port_open
 from test_utils import get_new_random_env_name
 
+from features.actors.Developer import Developer
+
 
 @fixture
 def random_seed(context):
@@ -101,6 +103,12 @@ def faas_client(context):
     context.faas_client = faas_client_factory.create(
         faas_node_ip, username, password)
     context.faas_client.login()
+
+
+@fixture
+def developer(context):
+    context.developer = Developer(context)
+    return context.developer
 
 
 fixtures_registry = {

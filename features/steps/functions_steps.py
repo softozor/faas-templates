@@ -1,8 +1,6 @@
 import json
 
-import requests as requests
 from behave import *
-from softozor_test_utils import wait_until
 
 
 @given(u'I am logged on the faas engine')
@@ -17,64 +15,37 @@ def step_impl(context, function_name):
 
 @given(u'it is pushed')
 def step_impl(context):
-    exit_code = context.faas_client.push(
-        context.path_to_serverless_configuration, context.current_function)
+    exit_code = context.developer.push_function(context.current_function)
     assert exit_code == 0
 
 
 @given(u'it is built')
 def step_impl(context):
-    exit_code = context.faas_client.build(
-        context.path_to_serverless_configuration, context.current_function)
+    exit_code = context.developer.build_function(context.current_function)
     assert exit_code == 0
 
 
 @given(u'it is up')
 def step_impl(context):
-    exit_code = context.faas_client.build(
-        context.path_to_serverless_configuration, context.current_function)
-    assert exit_code == 0
-    exit_code = context.faas_client.push(
-        context.path_to_serverless_configuration, context.current_function)
-    assert exit_code == 0
-    exit_code = context.faas_client.deploy(
-        context.path_to_serverless_configuration, context.current_function)
+    exit_code = context.developer.up_function(context.current_function)
     assert exit_code == 0
 
 
 @when(u'I build it')
 def step_impl(context):
-    context.exit_code = context.faas_client.build(
-        context.path_to_serverless_configuration, context.current_function)
+    context.exit_code = context.developer.build_function(context.current_function)
 
 
 @when(u'I deploy it')
 def step_impl(context):
-    context.exit_code = context.faas_client.deploy(
-        context.path_to_serverless_configuration, context.current_function)
-
-
-# testing if the function is ready is not enough, we really need to wait until
-# we can really invoke it
-def can_invoke_function(url, timeout_in_sec=120, period_in_sec=5):
-    def invoke():
-        response = requests.post(url)
-        return response.status_code < 500
-
-    try:
-        wait_until(lambda: invoke(),
-                   timeout_in_sec=timeout_in_sec, period_in_sec=period_in_sec)
-        return True
-    except TimeoutError:
-        return False
+    context.exit_code = context.developer.deploy_function(context.current_function)
 
 
 @when(u'I invoke it with payload')
 def step_impl(context):
     payload = json.loads(context.text)
-    function_url = f'http://{context.faas_client.endpoint}/function/{context.current_function}'
-    assert can_invoke_function(function_url)
-    context.response = requests.post(function_url, json=payload)
+    context.response = context.developer.invoke_function(
+        context.current_function, payload)
 
 
 @then(u'I get no error')

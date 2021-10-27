@@ -20,3 +20,4 @@ def before_all(context):
     use_fixture(path_to_serverless_configuration, context)
     use_fixture(jelastic_environment, context)
     use_fixture(faas_client, context)
+    use_fixture(developer, context)
