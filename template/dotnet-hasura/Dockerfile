@@ -20,8 +20,14 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine-amd64
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 
+RUN addgroup --system app \
+    && adduser --system --ingroup app app
+
 WORKDIR /app
 COPY --from=builder /app .
+RUN chown app:app -R /app
+
+USER app
 
 ENV ASPNETCORE_URLS "http://+:5000"
 
