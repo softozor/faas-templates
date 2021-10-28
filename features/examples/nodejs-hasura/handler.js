@@ -8,8 +8,8 @@ module.exports = ({ app }, wrap) => {
 }
 
 const handler = async input => {
-  if(!('value' in input)) {
-    throw 'input has no \'value\' property'
+  if(input.value > 100) {
+    throw '\'value\' is too high'
   }
   
   return {

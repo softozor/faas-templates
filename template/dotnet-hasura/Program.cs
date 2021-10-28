@@ -13,8 +13,8 @@ builder.Services.AddConfigurationManagement();
 
 BuilderSetup.Configure(builder);
 
-var app = builder.Build();
+await using var app = builder.Build();
 
 AppSetup.Configure(app);
 
-app.Run();
+await app.RunAsync();
