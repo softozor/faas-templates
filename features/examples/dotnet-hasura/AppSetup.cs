@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Softozor.HasuraHandling.Data;
+using Softozor.HasuraHandling;
 
 namespace HasuraFunction;
 
@@ -8,24 +10,11 @@ public static class AppSetup
 {
     public static void Configure(WebApplication app)
     {
-        app.MapPost("/", async http => 
-        {
-            var payload = await http.Request.ReadFromJsonAsync<ActionRequestPayload<Input>>();
-
-            var value = payload.Input.Value;
-        
-            if(value > 100)
+        app.MapPost("/", async (HttpContext http, IHandler<Input, Output> handler) =>
             {
-                http.Response.StatusCode = 400;
-                return;
+                Func<Input, Task<Output>> handle = handler.Handle;
+                await HandlerWrapper.HandleAsyncAction(http, handle);
             }
-        
-            var output = new Output
-            {
-                Value = value
-            };
-            
-            await http.Response.WriteAsJsonAsync(output);
-        });
+        );
     }
 }

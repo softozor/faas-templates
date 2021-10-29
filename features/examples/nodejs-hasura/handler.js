@@ -9,7 +9,7 @@ module.exports = ({ app }, wrap) => {
 
 const handler = async input => {
   if(input.value > 100) {
-    throw '\'value\' is too high'
+    throw `too high value ${input.value}`
   }
   
   return {

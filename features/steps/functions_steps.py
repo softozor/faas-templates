@@ -68,3 +68,10 @@ def step_impl(context):
 @then("she gets status code {status_code:d}")
 def step_impl(context, status_code):
     assert context.response.status_code == status_code, f'expected {status_code}, got {context.response.status_code}'
+
+
+@step("error message")
+def step_impl(context, error_message):
+    actual_error_payload = json.loads(context.text)
+    assert error_message == actual_error_payload[
+        'message'], f"expected {error_message}, got {actual_error_payload['message']}"

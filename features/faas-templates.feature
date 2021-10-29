@@ -77,9 +77,13 @@ Feature: Faas templates
       }
     }
     """
-    Then she gets status code <status code>
+    Then she gets status code 400
+    And error message
+    """
+    too high value 110
+    """
     
     Examples:
       | function name | status code |
-      | hasura-dotnet | 400         |
+      | hasura-dotnet | 400         | 
       | hasura-nodejs | 400         |
