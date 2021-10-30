@@ -70,8 +70,8 @@ def step_impl(context, status_code):
     assert context.response.status_code == status_code, f'expected {status_code}, got {context.response.status_code}'
 
 
-@step("error message")
-def step_impl(context, error_message):
-    actual_error_payload = json.loads(context.text)
-    assert error_message == actual_error_payload[
-        'message'], f"expected {error_message}, got {actual_error_payload['message']}"
+@step("error response")
+def step_impl(context):
+    actual_error_payload = json.loads(context.response.text)
+    expected_error_payload = json.loads(context.text)
+    assert expected_error_payload == actual_error_payload, f"expected {expected_error_payload}, got {actual_error_payload}"

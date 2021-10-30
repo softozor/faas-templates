@@ -78,9 +78,11 @@ Feature: Faas templates
     }
     """
     Then she gets status code 400
-    And error message
+    And error response
     """
-    too high value 110
+    {
+      "message": "too high value 110"
+    }
     """
     
     Examples:
