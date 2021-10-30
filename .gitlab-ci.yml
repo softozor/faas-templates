@@ -1,4 +1,5 @@
 stages:
+  - lint
   - prepare
   - build
   - acceptance-test
@@ -17,6 +18,12 @@ variables:
 .docker-push: &docker-push
   - docker push $DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
   - docker push $DOCKER_IMAGE:latest
+
+lint:
+  stage: lint
+  image: softozor/python-lint:$TOOLS_SHA
+  script:
+  - autopep8 -rd . --exit-code
 
 publish-feature-test-image:
   stage: prepare
@@ -41,7 +48,7 @@ build:
   variables:
     BASE_DIR: ./
   before_script:
-    - dotnet restore ${BASE_DIR}/packages.sln
+    - dotnet restore ${BASE_DIR}/faas-templates.sln
   script:
     - dotnet publish -c ${CONFIGURATION} ${BASE_DIR}/faas-templates.sln
   only:
@@ -66,6 +73,10 @@ acceptance-test:
         - ./features/test-reports/*.xml
     paths:
       - ./features/test-reports/*.xml
+  only:
+    changes:
+      - template/**/*
+      - features/**/*
 
 publish-pickles:
   stage: report
@@ -84,3 +95,7 @@ publish-pickles:
   artifacts:
     paths:
       - $OUTPUT_DIR
+  only:
+    changes:
+      - template/**/*
+      - features/**/*
