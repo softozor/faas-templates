@@ -28,12 +28,14 @@ def step_impl(context):
 
 @when(u'the developer builds it')
 def step_impl(context):
-    context.exit_code = context.developer.build_function(context.current_function)
+    context.exit_code = context.developer.build_function(
+        context.current_function)
 
 
 @when(u'she deploys it')
 def step_impl(context):
-    context.exit_code = context.developer.deploy_function(context.current_function)
+    context.exit_code = context.developer.deploy_function(
+        context.current_function)
 
 
 @when(u'she invokes it with payload')
