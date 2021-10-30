@@ -1,13 +1,11 @@
-using Microsoft.AspNetCore.Builder;
 using HasuraFunction;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Softozor.HasuraHandling.ConfigurationManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services
-    .AddControllers()
-    .AddNewtonsoftJson();
+builder.Services.AddControllers().AddNewtonsoftJson();
 
 builder.Services.AddConfigurationManagement();
 

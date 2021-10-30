@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿namespace HasuraFunction;
 
-namespace HasuraFunction;
+using Microsoft.AspNetCore.Builder;
 
 public static class BuilderSetup
 {

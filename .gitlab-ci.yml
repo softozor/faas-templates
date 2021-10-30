@@ -4,6 +4,8 @@ stages:
   - report
 
 variables:
+  CONFIGURATION: Release
+  DOTNET_VERSION: "6.0"
   GIT_SUBMODULE_STRATEGY: recursive
   NUGET_PACKAGES_DIRECTORY: .nuget
   TEST_IMAGE_NAME: softozor/hasura-serverless-test
@@ -31,6 +33,19 @@ publish-feature-test-image:
   only:
     changes:
       - ci/feature-tests/*
+
+build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-alpine-amd64
+  variables:
+    BASE_DIR: ./
+  before_script:
+    - dotnet restore ${BASE_DIR}/packages.sln
+  script:
+    - dotnet publish -c ${CONFIGURATION} ${BASE_DIR}/faas-templates.sln
+  only:
+    changes:
+      - ./template/dotnet-hasura/**/*
 
 acceptance-test:
   stage: acceptance-test
