@@ -1,7 +1,6 @@
 stages:
   - lint
   - prepare
-  - build
   - acceptance-test
   - report
 
@@ -42,20 +41,6 @@ publish-feature-test-image:
   only:
     changes:
       - ci/feature-tests/*
-
-build:
-  stage: build
-  image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-alpine-amd64
-  variables:
-    BASE_DIR: ./
-  before_script:
-    - dotnet nuget add source "${CI_API_V4_URL}/projects/198/packages/nuget/index.json" --name ${PACKAGE_SOURCE_NAME}
-    - dotnet restore ${BASE_DIR}/faas-templates.sln
-  script:
-    - dotnet publish -c ${CONFIGURATION} ${BASE_DIR}/faas-templates.sln
-  only:
-    changes:
-      - ./template/dotnet-hasura/**/*
 
 acceptance-test:
   stage: acceptance-test

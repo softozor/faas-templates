@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..\..</DockerfileContext>
     <AssemblyName>HasuraFunction</AssemblyName>
     <RootNamespace>HasuraFunction</RootNamespace>
     <OutputType>Library</OutputType>
@@ -11,8 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.3" />
-    <PackageReference Include="Shopozor.GraphqlClient" Version="1.1.1" />
-    <PackageReference Include="Softozor.HasuraHandling" Version="1.1.20" />
+    <PackageReference Include="Softozor.HasuraHandling" Version="1.2.1" />
   </ItemGroup>
 
 </Project>
