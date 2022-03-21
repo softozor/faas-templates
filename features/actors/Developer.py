@@ -17,8 +17,14 @@ class Developer:
             self.__path_to_serverless_configuration, function_name)
 
     def deploy_function(self, function_name):
-        return self.__faas_client.deploy(
-            self.__path_to_serverless_configuration, function_name)
+        path_to_conf = self.__path_to_serverless_configuration
+
+        def deployment_success():
+            exit_code = self.__faas_client.deploy(
+                path_to_conf, function_name)
+            return exit_code == 0
+
+        return not fail_after_timeout(lambda: deployment_success(), timeout_in_sec=30, period_in_sec=5)
 
     def up_function(self, function_name):
         exit_code = self.build_function(function_name)
