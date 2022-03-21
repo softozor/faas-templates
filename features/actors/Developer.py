@@ -19,19 +19,14 @@ class Developer:
     def deploy_function(self, function_name):
         path_to_conf = self.__path_to_serverless_configuration
 
-        call_count = 0
-
         # it seems like this is called only once
-        def deployment_success(call_count):
-            call_count += 1
-            print('call count = ', call_count)
+        def deployment_success():
+            print('calling deploy function')
             exit_code = self.__faas_client.deploy(
                 path_to_conf, function_name)
             return exit_code == 0
 
-        result = not fail_after_timeout(lambda: deployment_success(
-            call_count), timeout_in_sec=30, period_in_sec=5)
-        return result
+        return not fail_after_timeout(lambda: deployment_success(), timeout_in_sec=30, period_in_sec=5)
 
     def up_function(self, function_name):
         exit_code = self.build_function(function_name)
