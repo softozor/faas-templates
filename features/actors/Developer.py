@@ -22,9 +22,12 @@ class Developer:
         # it seems like this is called only once
         def deployment_success():
             print('calling deploy function')
-            exit_code = self.__faas_client.deploy(
-                path_to_conf, function_name)
-            return exit_code == 0
+            try:
+                exit_code = self.__faas_client.deploy(
+                    path_to_conf, function_name)
+                return exit_code == 0
+            except:
+                return 0
 
         return not fail_after_timeout(lambda: deployment_success(), timeout_in_sec=30, period_in_sec=5)
 
