@@ -15,6 +15,6 @@ functions:
 configuration:
   templates:
     - name: node-hasura
-      source: http://gitlab.hidora.com/softozor/faas-templates.git
+      source: https://gitlab.hidora.com/softozor/faas-templates.git
     - name: dotnet-hasura
-      source: http://gitlab.hidora.com/softozor/faas-templates.git
+      source: https://gitlab.hidora.com/softozor/faas-templates.git
