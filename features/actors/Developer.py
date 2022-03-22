@@ -17,10 +17,14 @@ class Developer:
             self.__path_to_serverless_configuration, function_name)
 
     def deploy_function(self, function_name):
-        exit_code = self.__faas_client.deploy(
-            self.__path_to_serverless_configuration, function_name)
-        print('exit code = ', exit_code)
-        return exit_code
+        try:
+            exit_code = self.__faas_client.deploy(
+                self.__path_to_serverless_configuration, function_name)
+            print('exit code = ', exit_code)
+            return exit_code
+        except:
+            print('caught exception')
+            return 1
 
     def up_function(self, function_name):
         exit_code = self.build_function(function_name)
