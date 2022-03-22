@@ -78,7 +78,7 @@ def jelastic_environment(context):
         context.current_env_name)
     yield context.current_env_name
     if context.current_env_info.exists():
-       context.control_client.delete_env(context.current_env_name)
+      context.control_client.delete_env(context.current_env_name)
 
 
 @fixture
