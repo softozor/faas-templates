@@ -22,8 +22,8 @@ class Developer:
                 self.__path_to_serverless_configuration, function_name)
             print('exit code = ', exit_code)
             return exit_code
-        except:
-            print('caught exception')
+        except Exception as e:
+            print('caught exception: ', e)
             return 1
 
     def up_function(self, function_name):
