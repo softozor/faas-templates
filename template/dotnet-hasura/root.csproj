@@ -21,7 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />
         <PackageReference Include="Softozor.HasuraHandling" Version="1.2.2" />
     </ItemGroup>
 
