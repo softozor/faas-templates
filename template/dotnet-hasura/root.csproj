@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Softozor.HasuraHandling" Version="1.2.2" />
+        <PackageReference Include="Softozor.HasuraHandling" Version="1.2.3" />
     </ItemGroup>
 
     <ItemGroup>
