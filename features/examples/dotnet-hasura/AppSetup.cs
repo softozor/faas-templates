@@ -11,7 +11,7 @@ public static class AppSetup
 {
     public static void Configure(WebApplication app)
     {
-        app.MapPost("/", async (HttpContext http, IActionHandler<Input, Output> handler) =>
+        app.MapPost("/", async (HttpContext http, Handler handler) =>
             {
                 Func<Input, Task<Output>> handle = handler.Handle;
                 await ActionHandlerWrapper.HandleAsync(http, handle);

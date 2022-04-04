@@ -5,7 +5,7 @@ using Softozor.HasuraHandling.Interfaces;
 
 namespace HasuraFunction;
 
-public class Handler : IActionHandler<Input, Output>
+public class Handler
 {
     public async Task<Output> Handle(Input input)
     {
