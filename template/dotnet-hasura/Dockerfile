@@ -23,6 +23,7 @@ RUN addgroup --system app \
 
 WORKDIR /app
 COPY --from=builder /app .
+COPY --from=builder /app/function/appsettings.json .
 RUN chown app:app -R /app
 
 USER app
