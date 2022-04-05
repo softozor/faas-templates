@@ -4,9 +4,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine-amd64 AS builder
 
 ARG FUNCTION_NAME
 ENV FUNCTION_NAME=${FUNCTION_NAME}
-# Supress collection of data.
 ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
-# Optimize for Docker builder caching by adding projects first.
 WORKDIR /src/function
 COPY ./function/$FUNCTION_NAME.csproj  ./Function.csproj
 WORKDIR /src
@@ -14,9 +12,10 @@ COPY ./root.csproj  .
 RUN dotnet nuget add source https://gitlab.hidora.com/api/v4/projects/198/packages/nuget/index.json --name "gitlab-softozor-packages" \
     && dotnet restore
 COPY . .
+COPY ./function/appsettings.json .
 RUN dotnet publish -c release -o /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine-amd64 
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine-amd64
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 
