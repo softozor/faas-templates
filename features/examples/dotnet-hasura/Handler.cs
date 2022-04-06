@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Threading.Tasks;
-using Softozor.HasuraHandling.Exceptions;
+using Softozor.HasuraHandling;
 
 namespace HasuraFunction;
 

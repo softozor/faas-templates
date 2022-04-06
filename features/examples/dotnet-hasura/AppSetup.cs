@@ -12,11 +12,12 @@ public static class AppSetup
     {
         app.MapPost("/", async (HttpContext http, Handler handler) =>
             {
-                var input = await InputHandling.ExtractActionRequestPayloadFrom<SetPasswordInput>(http);
+                var input = await InputHandling.ExtractActionRequestPayloadFrom<Input>(http);
 
                 try
                 {
-                    await handler.Handle(input);
+                    var output = await handler.Handle(input);
+                    await http.Response.WriteAsJsonAsync(output);
                 }
                 catch (HasuraFunctionException ex)
                 {
