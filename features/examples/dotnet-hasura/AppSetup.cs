@@ -12,8 +12,20 @@ public static class AppSetup
     {
         app.MapPost("/", async (HttpContext http, Handler handler) =>
             {
-                Func<Input, Task<Output>> handle = handler.Handle;
-                await ActionHandlerWrapper.HandleAsync(http, handle);
+                var input = await InputHandling.ExtractActionRequestPayloadFrom<SetPasswordInput>(http);
+
+                try
+                {
+                    await handler.Handle(input);
+                }
+                catch (HasuraFunctionException ex)
+                {
+                    await ErrorReporter.ReportError(http, ex);
+                }
+                catch (Exception ex)
+                {
+                    await ErrorReporter.ReportUnexpectedError(http, ex);
+                }
             }
         );
     }
