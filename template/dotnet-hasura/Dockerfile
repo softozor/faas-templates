@@ -12,9 +12,7 @@ COPY ./root.csproj  .
 RUN dotnet nuget add source https://gitlab.hidora.com/api/v4/projects/198/packages/nuget/index.json --name "gitlab-softozor-packages" \
     && dotnet restore
 COPY . .
-RUN touch ./function/appsettings.json \
-    && mv ./function/appsettings.json . \
-    && dotnet publish -c release -o /app
+RUN dotnet publish -c release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine-amd64
 
