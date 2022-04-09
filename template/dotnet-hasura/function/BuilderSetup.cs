@@ -1,6 +1,4 @@
-﻿namespace HasuraFunction;
-
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 
 public static class BuilderSetup
 {
