@@ -1,9 +1,10 @@
-﻿using HasuraFunction;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Softozor.HasuraHandling;
+
+namespace HasuraFunction;
 
 public static class AppSetup
 {
