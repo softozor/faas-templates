@@ -8,7 +8,7 @@ nodes:
     cloudlets: 16
     nodeGroup: faas
     nodeType: docker
-    image: softozor/ubuntu-git:latest
+    image: softozor/faasd:latest
 skipNodeEmails: true
 
 onInstall:
@@ -17,7 +17,6 @@ onInstall:
 actions:
   installFaas:
     - cmd[faas]:
-        - git clone https://github.com/openfaas/faasd
-        - cd faasd
-        - ./hack/install.sh
-      
+        - systemctl start containerd
+        - cd /faasd-installation
+        - /usr/local/bin/faasd install
