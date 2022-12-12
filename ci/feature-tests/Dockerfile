@@ -26,7 +26,5 @@ RUN apk add --update git
 COPY --from=build /usr/local/bin/faas-cli /usr/local/bin/faas-cli
 COPY --from=build /venv /venv
 COPY --from=build /usr/local/bin/faas-cli /usr/local/bin/faas-cli
-# this copy is necessary as long as we clone behave's git repo
-COPY --from=build /src /src
 
 WORKDIR /app
