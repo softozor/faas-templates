@@ -1,15 +1,19 @@
 package integration
 
 import common.lint.lint
+import common.livingDoc.addLivingDocArtifacts
+import common.livingDoc.generateLivingDocumentation
 import common.templates.NexusDockerLogin
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.DslContext
 import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.buildSteps.DockerCommandStep
+import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.dockerCommand
+import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 
-object Integration : BuildType({
+class Integration(dockerTag: String, livingDocZip: String) : BuildType({
     templates(NexusDockerLogin)
 
     id("Integration")
@@ -26,6 +30,8 @@ object Integration : BuildType({
             """.trimIndent()
         }
     }
+
+    val picklesReportDir = "./pickles"
 
     steps {
         lint()
@@ -54,7 +60,28 @@ object Integration : BuildType({
                 """.trimIndent()
             }
         }
+        script {
+            name = "Run Acceptance Tests"
+            scriptContent = """
+                behave --junit --junit-directory ./features/test-reports --tags ~wip \
+                    -D project-root-folder="%system.teamcity.build.checkoutDir%" \
+                    -D api-url="%system.jelastic.api-url%" \
+                    -D api-token="%system.jelastic.access-token%" \
+                    -D commit-sha="%build.vcs.number%"
+            """.trimIndent()
+            dockerPull = true
+            dockerImage = "%system.docker-registry.group%/softozor/faas-templates-test:%build.vcs.number%"
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
+        }
+        generateLivingDocumentation(
+            systemUnderTestName = "faas-templates",
+            pathToFeaturesDir = "./features",
+            picklesReportDir = picklesReportDir,
+            dockerTag = dockerTag,
+        )
     }
+
+    addLivingDocArtifacts(this, picklesReportDir, livingDocZip)
 
     features {
         perfmon {

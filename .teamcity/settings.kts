@@ -1,3 +1,4 @@
+import common.livingDoc.livingDocTab
 import common.templates.NexusDockerLogin
 import integration.Integration
 import jetbrains.buildServer.configs.kotlin.*
@@ -33,6 +34,14 @@ project {
 
     template(NexusDockerLogin)
 
-    buildType(Integration.Integration)
+    val dockerTag = "3d30e53e"
+    val livingDocZip = "LivingDocumentation.zip"
+
+    val integrationBuild = Integration.Integration(dockerTag, livingDocZip)
+    buildType(integrationBuild)
+
+    features {
+        livingDocTab(livingDocZip)
+    }
 }
 
