@@ -38,7 +38,11 @@ object Integration : BuildType({
                 contextDir = "ci/feature-tests/"
                 platform = DockerCommandStep.ImagePlatform.Linux
                 namesAndTags = "%system.docker-registry.hosted%/softozor/faas-templates-test:%build.vcs.number%"
-                commandArgs = "--pull --build-arg FAAS_CLI_VERSION=%faas-cli.version%"
+                commandArgs = """
+                    --pull
+                    --build-arg FAAS_CLI_VERSION=%faas-cli.version%
+                    --build-arg INDEX_URL=%system.pypi-registry.group%
+                """.trimIndent()
             }
         }
         dockerCommand {
