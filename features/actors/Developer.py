@@ -3,33 +3,37 @@ from softozor_test_utils.timing import fail_after_timeout
 
 
 class Developer:
-
     def __init__(self, context):
         self.__faas_client = context.faas_client
-        self.__path_to_serverless_configuration = context.path_to_serverless_configuration
+        self.__path_to_serverless_configuration = (
+            context.path_to_serverless_configuration
+        )
 
     def build_function(self, function_name):
         return self.__faas_client.build(
-            self.__path_to_serverless_configuration, function_name)
+            self.__path_to_serverless_configuration, function_name
+        )
 
     def push_function(self, function_name):
         return self.__faas_client.push(
-            self.__path_to_serverless_configuration, function_name)
+            self.__path_to_serverless_configuration, function_name
+        )
 
     def deploy_function(self, function_name):
         path_to_config = self.__path_to_serverless_configuration
 
         def deploy():
             try:
-                exit_code = self.__faas_client.deploy(
-                    path_to_config, function_name)
-                print('exit code = ', exit_code)
+                exit_code = self.__faas_client.deploy(path_to_config, function_name)
+                print("exit code = ", exit_code)
                 return exit_code == 0
             except Exception as e:
-                print('caught exception: ', e)
+                print("caught exception: ", e)
                 return 1
 
-        return not fail_after_timeout(lambda: deploy(), timeout_in_sec=60, period_in_sec=5)
+        return not fail_after_timeout(
+            lambda: deploy(), timeout_in_sec=60, period_in_sec=5
+        )
 
     def up_function(self, function_name):
         exit_code = self.build_function(function_name)
@@ -56,8 +60,10 @@ class Developer:
             response = self.__do_invoke_function(function_name, payload)
             return response.status_code < 500
 
-        return fail_after_timeout(lambda: can_invoke(), timeout_in_sec=30, period_in_sec=0.5)
+        return fail_after_timeout(
+            lambda: can_invoke(), timeout_in_sec=30, period_in_sec=0.5
+        )
 
     def __do_invoke_function(self, function_name, payload):
-        function_url = f'http://{self.__faas_client.endpoint}/function/{function_name}'
+        function_url = f"http://{self.__faas_client.endpoint}/function/{function_name}"
         return requests.post(function_url, json=payload)

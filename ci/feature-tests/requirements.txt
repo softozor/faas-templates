@@ -1,5 +1,5 @@
 # -e git+https://github.com/behave/behave@v1.2.7.dev2#egg=behave
 behave==1.2.6
-behave_to_cucumber_json_formatter==0.0.1.dev3+9ffd850
+behave_teamcity==0.1.25
+behave_to_cucumber_json_formatter==0.0.1.dev4+aca3124
 faas-client==1.4.23
-jelastic-client==7.0.3.1

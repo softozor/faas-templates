@@ -65,11 +65,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
         script {
             name = "Run Acceptance Tests"
             scriptContent = """
-                behave --junit --junit-directory ./features/test-reports --tags ~wip \
-                    -D project-root-folder="%system.teamcity.build.checkoutDir%" \
-                    -D api-url="%system.jelastic.api-url%" \
-                    -D api-token="%system.jelastic.access-token%" \
-                    -D commit-sha="%build.vcs.number%"
+                ./run_behave.sh
             """.trimIndent()
             dockerPull = true
             dockerImage = "%system.docker-registry.group%/softozor/faas-templates-test:%build.vcs.number%"
