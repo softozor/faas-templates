@@ -3,7 +3,7 @@ import os
 from behave import fixture
 from faas_client import FaasClientFactory
 
-from features.actors.Developer import Developer
+from features.actors.developer import Developer
 
 here = os.path.dirname(os.path.abspath(__file__))
 
