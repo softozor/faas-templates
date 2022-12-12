@@ -9,6 +9,7 @@ WORKDIR /src/function
 COPY ./function/$FUNCTION_NAME.csproj  ./Function.csproj
 WORKDIR /src
 COPY ./root.csproj  .
+# TODO: this source is wrong
 RUN dotnet nuget add source https://gitlab.hidora.com/api/v4/projects/198/packages/nuget/index.json --name "gitlab-softozor-packages" \
     && dotnet restore
 COPY . .

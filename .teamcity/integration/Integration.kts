@@ -70,6 +70,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
             dockerPull = true
             dockerImage = "%system.docker-registry.group%/softozor/faas-templates-test:%build.vcs.number%"
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
+            dockerRunParameters = "-v /var/run/docker.sock:/var/run/docker.sock"
         }
         generateLivingDocumentation(
             systemUnderTestName = "faas-templates",
