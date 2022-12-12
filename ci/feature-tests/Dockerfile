@@ -1,4 +1,6 @@
-FROM python:3.9-alpine AS build
+ARG PYTHON_VERSION=3.9
+
+FROM python:${PYTHON_VERSION}-alpine AS build
 
 ARG INDEX_URL
 ARG FAAS_CLI_VERSION

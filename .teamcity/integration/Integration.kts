@@ -41,7 +41,7 @@ object Integration : BuildType({
                 commandArgs = """
                     --pull
                     --build-arg FAAS_CLI_VERSION=%faas-cli.version%
-                    --build-arg INDEX_URL=%system.pypi-registry.group%
+                    --build-arg INDEX_URL=https://%system.pypi-registry.group%
                 """.trimIndent()
             }
         }
