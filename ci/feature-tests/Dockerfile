@@ -20,11 +20,12 @@ RUN apk add --update curl git \
 FROM ${DOCKER_REGISTRY}docker:latest
 
 ENV PATH=/venv/bin:$PATH
+ENV PATH=/venv/src/behave/bin:$PATH
 
 RUN apk add --update git
 
-COPY --from=build /usr/local/bin/faas-cli /usr/local/bin/faas-cli
+COPY --from=build /usr/local/bin/ /usr/local/bin/
+COPY --from=build /usr/local/lib /usr/local/lib
 COPY --from=build /venv /venv
-COPY --from=build /usr/local/bin/faas-cli /usr/local/bin/faas-cli
 
 WORKDIR /app

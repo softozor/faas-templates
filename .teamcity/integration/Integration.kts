@@ -1,5 +1,6 @@
 package integration
 
+import common.git.publishCommitShortSha
 import common.lint.lint
 import common.livingDoc.addLivingDocArtifacts
 import common.livingDoc.generateLivingDocumentation
@@ -34,6 +35,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
     val picklesReportDir = "./pickles"
 
     steps {
+        publishCommitShortSha()
         lint()
         dockerCommand {
             name = "Build Docker Image For Tests"
