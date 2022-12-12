@@ -1,8 +1,19 @@
 {
-  "name": "function",
-  "version": "1.0.0",
+  "author": "",
+  "dependencies": {
+    "http-errors": "^1.8.0"
+  },
   "description": "",
+  "devDependencies": {
+    "jest": "^26.4.2",
+    "jest-config": "^26.4.2",
+    "jest-junit": "^11.1.0",
+    "jest-when": "^2.7.2"
+  },
+  "keywords": [],
+  "license": "ISC",
   "main": "handler.js",
+  "name": "function",
   "scripts": {
     "test": "yarn test:unit",
     "test:unit": "jest",
@@ -12,16 +23,5 @@
     "test:unit:watch": "jest --watch",
     "test:unit:watchAll": "jest --watchAll"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "http-errors": "^1.8.0"
-  },
-  "devDependencies": {
-    "jest": "^26.4.2",
-    "jest-config": "^26.4.2",
-    "jest-junit": "^11.1.0",
-    "jest-when": "^2.7.2"
-  }
+  "version": "1.0.0"
 }

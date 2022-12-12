@@ -21,6 +21,9 @@ object Integration : BuildType({
 
     triggers {
         vcs {
+            branchFilter = """
+                +:*
+            """.trimIndent()
         }
     }
 

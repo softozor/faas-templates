@@ -11,7 +11,7 @@ const handler = async input => {
   if(input.value > 100) {
     throw `too high value ${input.value}`
   }
-  
+
   return {
     value: input.value
   }
