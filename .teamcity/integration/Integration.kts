@@ -40,6 +40,7 @@ object Integration : BuildType({
                 namesAndTags = "%system.docker-registry.hosted%/softozor/faas-templates-test:%build.vcs.number%"
                 commandArgs = """
                     --pull
+                    --build-arg DOCKER_REGISTRY=%system.docker-registry.group%/
                     --build-arg FAAS_CLI_VERSION=%faas-cli.version%
                     --build-arg INDEX_URL=https://%system.package-manager.deployer.username%:%system.package-manager.deployer.password%@%system.pypi-registry.group%
                 """.trimIndent()

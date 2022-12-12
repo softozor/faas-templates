@@ -1,9 +1,12 @@
 ARG PYTHON_VERSION=3.9
+ARG DOCKER_REGISTRY=""
 
-FROM python:${PYTHON_VERSION}-alpine AS build
+FROM ${DOCKER_REGISTRY}python:${PYTHON_VERSION}-alpine AS build
 
 ARG INDEX_URL
 ARG FAAS_CLI_VERSION
+
+ENV PATH=/venv/bin:$PATH
 
 COPY ./requirements.txt .
 
@@ -11,16 +14,18 @@ COPY ./requirements.txt .
 RUN apk add --update curl git \
   && curl -sSL https://github.com/openfaas/faas-cli/releases/download/${FAAS_CLI_VERSION}/faas-cli --output /usr/local/bin/faas-cli \
   && chmod u+x /usr/local/bin/faas-cli \
+  && python -m venv /venv \
   && pip install -i $INDEX_URL --no-cache-dir -r requirements.txt
 
-FROM docker:latest
+FROM ${DOCKER_REGISTRY}docker:latest
+
+ENV PATH=/venv/bin:$PATH
 
 RUN apk add --update git
 
 COPY --from=build /usr/local/bin/faas-cli /usr/local/bin/faas-cli
-COPY --from=build /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
-COPY --from=build /usr/local/bin /usr/local/bin
-COPY --from=build /usr/local/lib /usr/local/lib
+COPY --from=build /venv /venv
+COPY --from=build /usr/local/bin/faas-cli /usr/local/bin/faas-cli
 # this copy is necessary as long as we clone behave's git repo
 COPY --from=build /src /src
 
