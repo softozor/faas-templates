@@ -1,6 +1,6 @@
+import common.templates.NexusDockerLogin
+import integration.Integration
 import jetbrains.buildServer.configs.kotlin.*
-import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
-import jetbrains.buildServer.configs.kotlin.triggers.vcs
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -27,25 +27,12 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2022.10"
 
 project {
+    params {
+        param("teamcity.ui.settings.readOnly", "true")
+    }
 
-    buildType(SharedLibraries_FaasTemplates_Build)
+    template(NexusDockerLogin)
+
+    buildType(Integration.Integration)
 }
 
-object SharedLibraries_FaasTemplates_Build : BuildType({
-    id("Build")
-    name = "Build"
-
-    vcs {
-        root(DslContext.settingsRoot)
-    }
-
-    triggers {
-        vcs {
-        }
-    }
-
-    features {
-        perfmon {
-        }
-    }
-})
