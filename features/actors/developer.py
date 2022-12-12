@@ -10,7 +10,9 @@ from tenacity import (
 )
 
 
+# TODO: rework this class completely
 class Developer:
+    # TODO: this ctor is wrong
     def __init__(self, context):
         self._faas_client = context.faas_client
         self._path_to_serverless_configuration = (
@@ -37,6 +39,7 @@ class Developer:
         exit_code = self._faas_client.deploy(path_to_config, function_name)
         return exit_code
 
+    # TODO: the assertions should not be there
     def up_function(self, function_name):
         exit_code = self.build_function(function_name)
         assert exit_code == 0
@@ -47,6 +50,7 @@ class Developer:
             return not self._is_function_ready(function_name)
         return exit_code
 
+    # TODO: the assertions should not be there
     def invoke_function(self, function_name, payload=None):
         assert self._can_invoke_function(function_name, payload)
         return self._do_invoke_function(function_name, payload)

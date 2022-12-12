@@ -23,7 +23,8 @@ configuration.format = ["TeamcityFormatter", "PrettyCucumberJSONFormatter"]
 configuration.stdout_capture = False
 configuration.stderr_capture = False
 configuration.paths = [here]
-configuration.outputs = [None, "behave-report.json"]
+# TODO: find what to give here (None is not valid)
+# configuration.outputs = [None, "behave-report.json"]
 
 runner = Runner(configuration)
 
