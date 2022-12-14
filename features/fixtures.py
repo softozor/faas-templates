@@ -30,7 +30,9 @@ def faas_client(context):
     username = "admin"
     password = "OAPaL5mw3UtPcxBS660ppH9TsWhpkahSszHQGLZwZFebQPBLiuKQRC72P1ehro0"
     faas_client_factory = FaasClientFactory(port)
-    context.faas_client = faas_client_factory.create(hostname, username, password)
+    context.faas_client = faas_client_factory.create(
+        hostname, username, password, env=os.environ
+    )
     context.faas_client.login()
 
 

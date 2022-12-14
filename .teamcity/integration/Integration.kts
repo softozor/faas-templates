@@ -33,6 +33,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
     }
 
     val picklesReportDir = "./pickles"
+    val behaveResultsFile = "behave-report.json"
 
     steps {
         publishCommitShortSha()
@@ -64,6 +65,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
         }
         script {
             name = "Run Acceptance Tests"
+            // TODO: pass the behave-report.json filename to the run_behave.sh script
             scriptContent = """
                 ./run_behave.sh
             """.trimIndent()
@@ -76,11 +78,13 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
             systemUnderTestName = "faas-templates",
             pathToFeaturesDir = "./features",
             picklesReportDir = picklesReportDir,
+            testResultsFile = behaveResultsFile,
+            testResultsFormat = "cucumberjson",
             dockerTag = dockerTag,
         )
     }
 
-    artifactRules += ", behave-report.json"
+    artifactRules += ", $behaveResultsFile"
 
     addLivingDocArtifacts(this, picklesReportDir, livingDocZip)
 
@@ -90,6 +94,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
     }
 
     params {
+        param("env.DOCKER_REGISTRY", "%system.docker-registry.hosted%")
         param("faas-cli.version", "0.15.4")
         param("teamcity.vcsTrigger.runBuildInNewEmptyBranch", "true")
     }
