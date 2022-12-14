@@ -29,10 +29,8 @@ def faas_client(context):
     hostname = "jelasticozor-openfaas.hidora.com"
     username = "admin"
     password = "OAPaL5mw3UtPcxBS660ppH9TsWhpkahSszHQGLZwZFebQPBLiuKQRC72P1ehro0"
-    faas_client_factory = FaasClientFactory(port)
-    context.faas_client = faas_client_factory.create(
-        hostname, username, password, env=os.environ
-    )
+    faas_client_factory = FaasClientFactory(port, env=os.environ)
+    context.faas_client = faas_client_factory.create(hostname, username, password)
     context.faas_client.login()
 
 
