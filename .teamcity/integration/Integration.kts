@@ -80,6 +80,8 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
         )
     }
 
+    artifactRules += ", behave-report.json"
+
     addLivingDocArtifacts(this, picklesReportDir, livingDocZip)
 
     features {
