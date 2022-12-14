@@ -1,7 +1,7 @@
 import os
 import sys
 import traceback
-from argparse import ArgumentParser
+import argparse
 
 from behave.configuration import Configuration
 from behave.formatter import _registry
@@ -18,8 +18,8 @@ _registry.register_as("PrettyCucumberJSONFormatter", PrettyCucumberJSONFormatter
 
 
 def main():
-    parser = ArgumentParser()
-    parser.add_argument("--output-file", type=str, required=True)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("output_file", type=str)
     args = parser.parse_args()
 
     # TODO: activate when we use behave 1.2.7
