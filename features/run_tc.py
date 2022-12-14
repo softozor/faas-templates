@@ -16,32 +16,38 @@ here = os.path.dirname(os.path.abspath(__file__))
 _registry.register_as("TeamcityFormatter", TeamcityFormatter)
 _registry.register_as("PrettyCucumberJSONFormatter", PrettyCucumberJSONFormatter)
 
-parser = ArgumentParser()
-parser.add_argument("--output-file", type=str, required=True)
-args = parser.parse_args()
 
-# TODO: activate when we use behave 1.2.7
-# tags = ["~@wip"]
-tags = []
+def main():
+    parser = ArgumentParser()
+    parser.add_argument("--output-file", type=str, required=True)
+    args = parser.parse_args()
 
-configuration = Configuration(tags=tags)
-configuration.format = ["PrettyCucumberJSONFormatter", "TeamcityFormatter"]
-configuration.stdout_capture = False
-configuration.stderr_capture = False
-configuration.paths = [here]
-configuration.outputs = [StreamOpener(args.output_file)]
+    # TODO: activate when we use behave 1.2.7
+    # tags = ["~@wip"]
+    tags = []
 
-runner = Runner(configuration)
+    configuration = Configuration(tags=tags)
+    configuration.format = ["PrettyCucumberJSONFormatter", "TeamcityFormatter"]
+    configuration.stdout_capture = False
+    configuration.stderr_capture = False
+    configuration.paths = [here]
+    configuration.outputs = [StreamOpener(args.output_file)]
 
-try:
-    success = runner.run()
-    print(f"Test runner returned: {success}")
-    if runner.hook_failures > 0:
-        print(f"Encountered {runner.hook_failures} hook failures", file=sys.stderr)
+    runner = Runner(configuration)
+
+    try:
+        success = runner.run()
+        print(f"Test runner returned: {success}")
+        if runner.hook_failures > 0:
+            print(f"Encountered {runner.hook_failures} hook failures", file=sys.stderr)
+            sys.exit(2)
+    except:  # noqa: E722
+        print("Encountered unhandled error", file=sys.stderr)
+        traceback.print_exception(*sys.exc_info(), file=sys.stderr)
         sys.exit(2)
-except:  # noqa: E722
-    print("Encountered unhandled error", file=sys.stderr)
-    traceback.print_exception(*sys.exc_info(), file=sys.stderr)
-    sys.exit(2)
 
-sys.exit(int(success))
+    sys.exit(int(success))
+
+
+if __name__ == "__main__":
+    main()
