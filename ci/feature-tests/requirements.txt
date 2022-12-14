@@ -2,6 +2,6 @@
 behave==1.2.6
 behave_teamcity==0.1.25
 behave_to_cucumber_json_formatter==0.0.1.dev4+aca3124
-faas-client==1.4.24.dev1+61fb004
+faas-client==1.4.24
 requests==2.28.1
 tenacity==8.1.0
