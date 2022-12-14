@@ -1,6 +1,7 @@
 import os
 import sys
 import traceback
+from argparse import ArgumentParser
 
 from behave.configuration import Configuration
 from behave.formatter import _registry
@@ -15,6 +16,10 @@ here = os.path.dirname(os.path.abspath(__file__))
 _registry.register_as("TeamcityFormatter", TeamcityFormatter)
 _registry.register_as("PrettyCucumberJSONFormatter", PrettyCucumberJSONFormatter)
 
+parser = ArgumentParser()
+parser.add_argument("--output-file", type=str, required=True)
+args = parser.parse_args()
+
 # TODO: activate when we use behave 1.2.7
 # tags = ["~@wip"]
 tags = []
@@ -24,7 +29,7 @@ configuration.format = ["PrettyCucumberJSONFormatter", "TeamcityFormatter"]
 configuration.stdout_capture = False
 configuration.stderr_capture = False
 configuration.paths = [here]
-configuration.outputs = [StreamOpener("behave-report.json")]
+configuration.outputs = [StreamOpener(args.output_file)]
 
 runner = Runner(configuration)
 

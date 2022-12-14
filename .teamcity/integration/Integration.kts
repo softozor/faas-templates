@@ -65,9 +65,8 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
         }
         script {
             name = "Run Acceptance Tests"
-            // TODO: pass the behave-report.json filename to the run_behave.sh script
             scriptContent = """
-                ./run_behave.sh
+                ./run_behave.sh $behaveResultsFile
             """.trimIndent()
             dockerPull = true
             dockerImage = "%system.docker-registry.group%/softozor/faas-templates-test:%build.vcs.number%"
