@@ -18,12 +18,11 @@ _registry.register_as("PrettyCucumberJSONFormatter", PrettyCucumberJSONFormatter
 # tags = ["~@wip"]
 tags = []
 
-configuration = Configuration(tags=tags)
+configuration = Configuration(tags=tags, outfiles="behave-report.json")
 configuration.format = ["PrettyCucumberJSONFormatter", "TeamcityFormatter"]
 configuration.stdout_capture = False
 configuration.stderr_capture = False
 configuration.paths = [here]
-configuration.outputs = ["behave-report.json"]
 
 runner = Runner(configuration)
 
