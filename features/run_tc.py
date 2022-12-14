@@ -4,6 +4,7 @@ import traceback
 
 from behave.configuration import Configuration
 from behave.formatter import _registry
+from behave.formatter.base import StreamOpener
 from behave.runner import Runner
 from behave_teamcity import TeamcityFormatter
 from behave_to_cucumber_json_formatter import PrettyCucumberJSONFormatter
@@ -18,11 +19,12 @@ _registry.register_as("PrettyCucumberJSONFormatter", PrettyCucumberJSONFormatter
 # tags = ["~@wip"]
 tags = []
 
-configuration = Configuration(tags=tags, command_args="--outfiles=behave-report.json")
+configuration = Configuration(tags=tags)
 configuration.format = ["PrettyCucumberJSONFormatter", "TeamcityFormatter"]
 configuration.stdout_capture = False
 configuration.stderr_capture = False
 configuration.paths = [here]
+configuration.outputs = [StreamOpener("behave-report.json")]
 
 runner = Runner(configuration)
 
