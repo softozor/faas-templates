@@ -1,6 +1,8 @@
 package patches.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.*
+import jetbrains.buildServer.configs.kotlin.buildFeatures.XmlReport
+import jetbrains.buildServer.configs.kotlin.buildFeatures.xmlReport
 import jetbrains.buildServer.configs.kotlin.ui.*
 
 /*
@@ -12,6 +14,16 @@ changeBuildType(RelativeId("Integration")) {
     params {
         add {
             param("teamcity.ui.settings.readOnly", "false")
+        }
+    }
+
+    features {
+        add {
+            xmlReport {
+                id = "BUILD_EXT_3"
+                reportType = XmlReport.XmlReportType.JUNIT
+                rules = "+:mutmut.xml"
+            }
         }
     }
 }
