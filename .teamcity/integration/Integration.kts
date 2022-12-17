@@ -46,7 +46,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
                 }
                 contextDir = "ci/feature-tests/"
                 platform = DockerCommandStep.ImagePlatform.Linux
-                namesAndTags = "%system.docker-registry.hosted%/softozor/faas-templates-test:%build.vcs.number%"
+                namesAndTags = "%system.docker-registry.hosted%/faas-templates/feature-test:%build.vcs.number%"
                 commandArgs = """
                     --pull
                     --build-arg DOCKER_REGISTRY=%system.docker-registry.group%/
@@ -59,7 +59,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
             name = "Push Docker Image For Tests"
             commandType = push {
                 namesAndTags = """
-                    %system.docker-registry.hosted%/softozor/faas-templates-test:%build.vcs.number%
+                    %system.docker-registry.hosted%/faas-templates/feature-test:%build.vcs.number%
                 """.trimIndent()
             }
         }
@@ -70,7 +70,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
                 ./run_behave.sh $behaveResultsFile
             """.trimIndent()
             dockerPull = true
-            dockerImage = "%system.docker-registry.group%/softozor/faas-templates-test:%build.vcs.number%"
+            dockerImage = "%system.docker-registry.group%/faas-templates/feature-test:%build.vcs.number%"
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerRunParameters = "-v /var/run/docker.sock:/var/run/docker.sock"
         }
