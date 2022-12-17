@@ -4,30 +4,6 @@ Feature: Faas templates
   I want to use faas templates specific for hasura,
   so that I can reduce the development overhead.
 
-  Scenario Outline: The function builds
-
-    Given the function '<function name>'
-    When the developer builds it
-    Then she gets no error
-
-    Examples:
-      | function name |
-      | hasura-dotnet |
-      | hasura-nodejs |
-
-  Scenario Outline: The function gets deployed on the faas engine
-
-    Given the function '<function name>'
-    And the developer has built it
-    And she has pushed it
-    When she deploys it
-    Then she gets no error
-
-    Examples:
-      | function name |
-      | hasura-dotnet |
-      | hasura-nodejs |
-
   Scenario Outline: The function returns the expected success response
 
     A function is up after it has been built, pushed, and deployed  
@@ -77,7 +53,7 @@ Feature: Faas templates
       }
     }
     """
-    Then she gets status code 400
+    Then she gets status code <status code>
     And error message
     """
     too high value 110
