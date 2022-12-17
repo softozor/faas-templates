@@ -66,7 +66,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
         script {
             name = "Run Acceptance Tests"
             scriptContent = """
-                docker login %system.docker-registry.hosted% -u %system.package-manager.deployer.username% -p %system.package-manager.deployer.password%
+                docker login ${'$'}DOCKER_HOSTED_REGISTRY -u %system.package-manager.deployer.username% -p %system.package-manager.deployer.password%
                 ./run_behave.sh $behaveResultsFile
             """.trimIndent()
             dockerPull = true
@@ -97,6 +97,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
         param("env.FAAS_HOSTNAME", "%system.openfaas.url%")
         param("env.FAAS_USERNAME", "%system.openfaas.admin-user%")
         param("env.FAAS_PASSWORD", "%system.openfaas.admin-password%")
+        param("env.DOCKER_HOSTED_REGISTRY", "%system.docker-registry.hosted%")
         param("faas-cli.version", "0.15.4")
         param("teamcity.vcsTrigger.runBuildInNewEmptyBranch", "true")
     }
