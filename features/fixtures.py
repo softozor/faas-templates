@@ -2,22 +2,10 @@ import os
 
 from behave import fixture
 from faas_client import FaasClientFactory
-from docker import DockerClient
+
 from features.actors.developer import Developer
 
 here = os.path.dirname(os.path.abspath(__file__))
-
-
-@fixture
-def docker_connection(context):
-    docker_client = DockerClient()
-    docker_client.login(
-        registry=os.environ["DOCKER_HOSTED_REGISTRY"],
-        username=os.environ["DOCKER_REGISTRY_USERNAME"],
-        password=os.environ["DOCKER_REGISTRY_PASSWORD"],
-    )
-    yield
-    docker_client.close()
 
 
 @fixture
