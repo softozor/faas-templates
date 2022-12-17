@@ -25,10 +25,9 @@ def path_to_serverless_configuration(context):
 @fixture
 def faas_client(context):
     port = 8080
-    # TODO: pass this hostname as an argument
     hostname = os.environ["FAAS_HOSTNAME"]
-    username = "admin"
-    password = "OAPaL5mw3UtPcxBS660ppH9TsWhpkahSszHQGLZwZFebQPBLiuKQRC72P1ehro0"
+    username = os.environ["FAAS_USERNAME"]
+    password = os.environ["FAAS_PASSWORD"]
     faas_client_factory = FaasClientFactory(port, env=os.environ)
     context.faas_client = faas_client_factory.create(hostname, username, password)
     context.faas_client.login()

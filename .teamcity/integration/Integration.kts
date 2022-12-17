@@ -72,9 +72,6 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
             dockerImage = "%system.docker-registry.group%/softozor/faas-templates-test:%build.vcs.number%"
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerRunParameters = "-v /var/run/docker.sock:/var/run/docker.sock"
-            params {
-                param("env.FAAS_HOSTNAME", "%system.openfaas.url%")
-            }
         }
         generateLivingDocumentation(
             systemUnderTestName = "faas-templates",
@@ -96,6 +93,9 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
     }
 
     params {
+        param("env.FAAS_HOSTNAME", "%system.openfaas.url%")
+        param("env.FAAS_USERNAME", "%system.openfaas.admin-user%")
+        param("env.FAAS_PASSWORD", "%system.openfaas.admin-password%")
         param("env.DOCKER_REGISTRY", "%system.docker-registry.hosted%")
         param("faas-cli.version", "0.15.4")
         param("teamcity.vcsTrigger.runBuildInNewEmptyBranch", "true")
