@@ -35,7 +35,10 @@ def faas_client(context):
 
 @fixture
 def developer(context):
-    context.developer = Developer(context)
+    context.developer = Developer(
+        faas_client=context.faas_client,
+        path_to_serverless_configuration=context.path_to_serverless_configuration,
+    )
     return context.developer
 
 

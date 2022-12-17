@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 import requests
+from faas_client.faas_client import FaasClient
 from tenacity import (
     retry,
     retry_if_not_result,
@@ -12,12 +13,9 @@ from tenacity import (
 
 # TODO: rework this class completely
 class Developer:
-    # TODO: this ctor is wrong
-    def __init__(self, context):
-        self._faas_client = context.faas_client
-        self._path_to_serverless_configuration = (
-            context.path_to_serverless_configuration
-        )
+    def __init__(self, faas_client: FaasClient, path_to_serverless_configuration: str):
+        self._faas_client = faas_client
+        self._path_to_serverless_configuration = path_to_serverless_configuration
 
     def build_function(self, function_name):
         return self._faas_client.build(
