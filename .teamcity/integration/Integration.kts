@@ -72,6 +72,9 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
             dockerImage = "%system.docker-registry.group%/softozor/faas-templates-test:%build.vcs.number%"
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerRunParameters = "-v /var/run/docker.sock:/var/run/docker.sock"
+            params {
+                param("env.FAAS_HOSTNAME", "%system.openfaas.url%")
+            }
         }
         generateLivingDocumentation(
             systemUnderTestName = "faas-templates",

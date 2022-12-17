@@ -26,7 +26,7 @@ def path_to_serverless_configuration(context):
 def faas_client(context):
     port = 8080
     # TODO: pass this hostname as an argument
-    hostname = "jelasticozor-openfaas.hidora.com"
+    hostname = os.environ["FAAS_HOSTNAME"]
     username = "admin"
     password = "OAPaL5mw3UtPcxBS660ppH9TsWhpkahSszHQGLZwZFebQPBLiuKQRC72P1ehro0"
     faas_client_factory = FaasClientFactory(port, env=os.environ)
