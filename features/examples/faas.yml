@@ -5,13 +5,13 @@ functions:
   hasura-dotnet:
     lang: dotnet-hasura
     handler: ./dotnet-hasura
-    image: ${DOCKER_REGISTRY}/faas-templates/dotnet-hasura-example-fnc:latest
+    image: ${DOCKER_HOSTED_REGISTRY}/faas-templates/dotnet-hasura-example-fnc:latest
     build_args:
       FUNCTION_NAME: DotNetHasura
   hasura-nodejs:
     lang: node-hasura
     handler: ./nodejs-hasura
-    image: ${DOCKER_REGISTRY}/faas-templates/nodejs-hasura-example-fnc:latest
+    image: ${DOCKER_HOSTED_REGISTRY}/faas-templates/nodejs-hasura-example-fnc:latest
 configuration:
   templates:
     - name: node-hasura
