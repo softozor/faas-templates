@@ -38,7 +38,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
     steps {
         publishCommitShortSha()
         lint()
-        startOpenFaasServer()
+        startOpenFaasServer(dockerTag)
         dockerCommand {
             name = "Build Docker Image For Tests"
             commandType = build {

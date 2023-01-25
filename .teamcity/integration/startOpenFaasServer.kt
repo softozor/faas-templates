@@ -5,7 +5,7 @@ import jetbrains.buildServer.configs.kotlin.BuildSteps
 import jetbrains.buildServer.configs.kotlin.buildSteps.PythonBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.python
 
-fun BuildSteps.startOpenFaasServer(): PythonBuildStep {
+fun BuildSteps.startOpenFaasServer(dockerToolsTag: String): PythonBuildStep {
     return python {
         name = "Start OpenFaaS server"
         command = script {
@@ -16,5 +16,8 @@ fun BuildSteps.startOpenFaasServer(): PythonBuildStep {
                     --openfaas-env-name %system.openfaas.env-name%
                 """.trimIndent()
         }
+        dockerImage = "%system.docker-registry.group%/docker-tools/jelastic:$dockerToolsTag"
+        dockerPull = true
+        dockerImagePlatform = PythonBuildStep.ImagePlatform.Linux
     }
 }
