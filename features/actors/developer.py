@@ -1,13 +1,14 @@
 from datetime import timedelta
 
 import requests
+from faas_client import FaasClientException
 from faas_client.faas_client import FaasClient
 from tenacity import (
     retry,
-    retry_if_not_result,
     wait_fixed,
     stop_after_delay,
     retry_if_result,
+    retry_if_exception_type,
 )
 
 
@@ -17,24 +18,19 @@ class Developer:
         self._path_to_serverless_configuration = path_to_serverless_configuration
 
     def build_function(self, function_name):
-        return self._faas_client.build(
-            self._path_to_serverless_configuration, function_name
-        )
+        self._faas_client.build(self._path_to_serverless_configuration, function_name)
 
     def push_function(self, function_name):
-        return self._faas_client.push(
-            self._path_to_serverless_configuration, function_name
-        )
+        self._faas_client.push(self._path_to_serverless_configuration, function_name)
 
     @retry(
-        retry=retry_if_not_result(lambda exit_code: exit_code == 0),
+        retry=retry_if_exception_type(FaasClientException),
         wait=wait_fixed(timedelta(seconds=5).seconds),
         stop=stop_after_delay(timedelta(minutes=1).seconds),
     )
     def deploy_function(self, function_name):
         path_to_config = self._path_to_serverless_configuration
-        exit_code = self._faas_client.deploy(path_to_config, function_name)
-        return exit_code
+        self._faas_client.deploy(path_to_config, function_name)
 
     def up_function(self, function_name):
         self.build_function(function_name)
