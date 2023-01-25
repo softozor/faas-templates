@@ -25,7 +25,7 @@ def main():
     if not env_info.is_running():
         control_client.start_env(args.openfaas_env_name)
         env_info = control_client.get_env_info(args.openfaas_env_name)
-    print("env info: ", env_info)
+    print("env info: ", env_info.status())
     if not env_info.is_running():
         sys.exit(1)
 
