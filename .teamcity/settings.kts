@@ -34,7 +34,7 @@ project {
 
     template(NexusDockerLogin)
 
-    val dockerTag = "bf56666d"
+    val dockerTag = "e24febf1"
     val livingDocZip = "LivingDocumentation.zip"
 
     val integrationBuild = Integration.Integration(dockerTag, livingDocZip)

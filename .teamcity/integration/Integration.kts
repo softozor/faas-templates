@@ -38,6 +38,7 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
     steps {
         publishCommitShortSha()
         lint()
+        startOpenFaasServer()
         dockerCommand {
             name = "Build Docker Image For Tests"
             commandType = build {
@@ -49,9 +50,9 @@ class Integration(dockerTag: String, livingDocZip: String) : BuildType({
                 namesAndTags = "%system.docker-registry.hosted%/faas-templates/feature-test:%build.vcs.number%"
                 commandArgs = """
                     --pull
-                    --build-arg DOCKER_REGISTRY=%system.docker-registry.group%/
+                    --build-arg DOCKER_REGISTRY
                     --build-arg FAAS_CLI_VERSION=%faas-cli.version%
-                    --build-arg INDEX_URL=https://%system.package-manager.deployer.username%:%system.package-manager.deployer.password%@%system.pypi-registry.group%
+                    --build-arg PIP_INDEX_URL
                 """.trimIndent()
             }
         }
